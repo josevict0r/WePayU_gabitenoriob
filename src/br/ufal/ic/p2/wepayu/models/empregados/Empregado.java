@@ -3,6 +3,7 @@ package br.ufal.ic.p2.wepayu.models.empregados;
 import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
 import br.ufal.ic.p2.wepayu.Exception.EmpregadoAtributosExceptions;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.ArrayList;
 
@@ -43,11 +44,10 @@ public class Empregado {
     }
 
 
-    public String addEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+    public String addEmpregado() throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
 
 
         String id = UUID.randomUUID().toString();
-
         return id;
     }
 

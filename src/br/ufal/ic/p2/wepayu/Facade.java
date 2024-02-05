@@ -20,6 +20,9 @@ public class Facade {
         SistemaController.encerrarSistema();
     }
 
+    public String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+       return EmpregadoController.getAtributoEmpregado(emp,atributo);
+    }
 
 
     public String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {

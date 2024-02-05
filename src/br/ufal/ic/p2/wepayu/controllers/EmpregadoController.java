@@ -12,8 +12,36 @@ import java.util.HashMap;
 public class EmpregadoController {
     public static HashMap<String, Empregado> empregados = new HashMap<>();
 
+    public  static String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException{
+        if(emp.isEmpty()){
+            throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
+        }
+        if(!(empregados.containsKey(emp))){
+            throw new EmpregadoAtributosExceptions("Empregado nao existe.");
+        }
+        if(!(empregados.containsKey(atributo))){
+            throw new EmpregadoAtributosExceptions("Atributo nao existe.");
+        }
+        Empregado empregado = empregados.get(emp);
+        return switch (atributo) {
+            case "nome" -> empregado.getNome();
+            case "endereco" -> empregado.getEndereco();
+            case "tipo" -> empregado.getTipo();
+            case "salario" -> empregado.getSalario();
+            /* Nesse caso, empregado é uma instância de Comissionado e também uma instância de Empregado (devido à herança)
+Quando você usa instanceof, está verificando se o objeto referenciado por uma variável é uma instância de uma classe específica ou de uma de suas subclasses.*/
+            case "comissao" -> {
+                if (empregado instanceof Comissionado) {
+                    yield ((Comissionado) empregado).getComissao();
+                } else {
+                    throw new EmpregadoAtributosExceptions("Empregado não é do tipo Comissionado.");
+                }
+            }
+            default -> throw new EmpregadoAtributosExceptions("Atributo nao existe.");
+        };
 
 
+    }
     public static String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
 
         //CRIAR EMPREGADOS DO TIPO ASSALARIADO E HORISTA
@@ -40,9 +68,10 @@ public class EmpregadoController {
             }
 
 
+
             Empregado empregado = new Assalariado(nome,endereco,tipo,salario);
-            String id = empregado.addEmpregado(nome, endereco, tipo, salario);
-            empregados.put(empregado.addEmpregado(nome, endereco, tipo, salario), empregado);
+            String id = empregado.addEmpregado();
+            empregados.put(empregado.addEmpregado(), empregado);
             return  id;
 
         } else if (tipo.equals("horista")) {
@@ -60,10 +89,17 @@ public class EmpregadoController {
             if (Double.parseDouble(salario) < 0) {
                 throw new EmpregadoAtributosExceptions("Salario deve ser nao-negativo.");
             }
+            if (!tipo.equalsIgnoreCase("horista") && !tipo.equalsIgnoreCase("assalariado") && !tipo.equalsIgnoreCase("comissionado")) {
+                throw new EmpregadoAtributosExceptions("Tipo invalido.");
+            }
+            if (tipo.equalsIgnoreCase("comissionado")){
+                throw new EmpregadoAtributosExceptions("Tipo nao aplicavel");
+            }
+
 
 
             Empregado empregado= new Horista(nome,endereco,tipo,salario);
-           String id = empregado.addEmpregado(nome, endereco, tipo, salario);
+           String id = empregado.addEmpregado();
             //O ADDEMPREGADO SO TA SERVINDO P PEGAR ID
             empregados.put(id, empregado);
             return id;
@@ -91,7 +127,7 @@ public class EmpregadoController {
             if (!tipo.equalsIgnoreCase("horista") && !tipo.equalsIgnoreCase("assalariado") && !tipo.equalsIgnoreCase("comissionado")) {
                 throw new EmpregadoAtributosExceptions("Tipo invalido.");
             }
-            if (tipo.equalsIgnoreCase("comissionado")){
+            if (tipo.equalsIgnoreCase("horista") || tipo.equalsIgnoreCase("assalariado")){
                 throw new EmpregadoAtributosExceptions("Tipo nao aplicavel");
             }
             if (salario.isEmpty()) throw new EmpregadoAtributosExceptions("Salario nao pode ser nulo.");
@@ -113,7 +149,7 @@ public class EmpregadoController {
 
             Empregado empregado = new Comissionado(nome,endereco,tipo,salario,comissao);
             //O ADDEMPREGADO SO TA SERVINDO P PEGAR ID
-            String id = empregado.addEmpregado(nome, endereco, tipo, salario);
+            String id = empregado.addEmpregado();
             empregados.put(id, empregado);
             return id;
 

@@ -11,11 +11,7 @@ public class SistemaController {
 
     public static void zerarSistema() {
 
-       /* public static void zerarSistema() {
-
             EmpregadoController.empregados = new HashMap<>();
-
-        }
-    }*/
     }
-}
+    }
+
