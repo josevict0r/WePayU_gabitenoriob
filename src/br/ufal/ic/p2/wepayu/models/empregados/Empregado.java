@@ -12,6 +12,7 @@ public class Empregado {
     private String endereco;
     private String tipo;
     private String salario;
+    private boolean sindicalizado;
 
 
 
@@ -25,7 +26,9 @@ public class Empregado {
     }
 
 
-
+    public boolean getSindicalizado() {
+        return sindicalizado;
+    }
 
     public String getNome() {
         return nome;

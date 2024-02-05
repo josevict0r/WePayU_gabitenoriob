@@ -21,7 +21,15 @@ public class Facade {
     }
 
     public String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
-       return EmpregadoController.getAtributoEmpregado(emp,atributo);
+        String resultado = EmpregadoController.getAtributoEmpregado(emp, atributo);
+
+
+        if (isNumeric(resultado)) {
+
+            resultado = String.format("%.2f", Double.parseDouble(resultado));
+        }
+
+        return resultado;
     }
 
 
@@ -32,6 +40,13 @@ public class Facade {
     public String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {
         return EmpregadoController.criarEmpregado(nome,endereco,tipo,salario,comissao);
     }
-
+    private static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
 

@@ -7,22 +7,28 @@ import br.ufal.ic.p2.wepayu.models.empregados.Comissionado;
 import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
 import br.ufal.ic.p2.wepayu.models.empregados.Horista;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class EmpregadoController {
     public static HashMap<String, Empregado> empregados = new HashMap<>();
 
     public  static String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException{
+        Empregado empregado = empregados.get(emp);
         if(emp.isEmpty()){
             throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
         }
         if(!(empregados.containsKey(emp))){
             throw new EmpregadoAtributosExceptions("Empregado nao existe.");
         }
-        if(!(empregados.containsKey(atributo))){
+        if (!(Arrays.asList("nome", "endereco", "tipo", "salario", "sindicalizado", "comissao").contains(atributo))) {
             throw new EmpregadoAtributosExceptions("Atributo nao existe.");
         }
-        Empregado empregado = empregados.get(emp);
+        if(atributo.equals("sindicalizado")){
+           if(!(empregado.getSindicalizado())){
+               return "false";
+           }
+        }
         return switch (atributo) {
             case "nome" -> empregado.getNome();
             case "endereco" -> empregado.getEndereco();
@@ -37,6 +43,7 @@ Quando você usa instanceof, está verificando se o objeto referenciado por uma 
                     throw new EmpregadoAtributosExceptions("Empregado não é do tipo Comissionado.");
                 }
             }
+            case "sindicalizado" -> String.valueOf(empregado.getSindicalizado());
             default -> throw new EmpregadoAtributosExceptions("Atributo nao existe.");
         };
 
