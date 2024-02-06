@@ -43,6 +43,7 @@ public class Empregado {
     }
 
     public String getSalario() {
+        salario = salario.replace(',', '.');
         return salario;
     }
 

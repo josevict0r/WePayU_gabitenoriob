@@ -15,10 +15,12 @@ public class EmpregadoController {
 
     public  static String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException{
         Empregado empregado = empregados.get(emp);
+
+
         if(emp.isEmpty()){
             throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
         }
-        if(!(empregados.containsKey(emp))){
+        if((empregados.get(emp) == null)){
             throw new EmpregadoAtributosExceptions("Empregado nao existe.");
         }
         if (!(Arrays.asList("nome", "endereco", "tipo", "salario", "sindicalizado", "comissao").contains(atributo))) {
@@ -34,8 +36,6 @@ public class EmpregadoController {
             case "endereco" -> empregado.getEndereco();
             case "tipo" -> empregado.getTipo();
             case "salario" -> empregado.getSalario();
-            /* Nesse caso, empregado é uma instância de Comissionado e também uma instância de Empregado (devido à herança)
-Quando você usa instanceof, está verificando se o objeto referenciado por uma variável é uma instância de uma classe específica ou de uma de suas subclasses.*/
             case "comissao" -> {
                 if (empregado instanceof Comissionado) {
                     yield ((Comissionado) empregado).getComissao();
@@ -52,6 +52,8 @@ Quando você usa instanceof, está verificando se o objeto referenciado por uma 
     public static String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
 
         //CRIAR EMPREGADOS DO TIPO ASSALARIADO E HORISTA
+        salario = salario.replace(',', '.');
+
 
         if (tipo.equals("assalariado")){
             if (nome.isBlank()){
@@ -96,13 +98,15 @@ Quando você usa instanceof, está verificando se o objeto referenciado por uma 
             if (Double.parseDouble(salario) < 0) {
                 throw new EmpregadoAtributosExceptions("Salario deve ser nao-negativo.");
             }
-            if (!tipo.equalsIgnoreCase("horista") && !tipo.equalsIgnoreCase("assalariado") && !tipo.equalsIgnoreCase("comissionado")) {
+
+            }
+        else {
+            if (tipo.equalsIgnoreCase("comissionado")) {
+                throw new EmpregadoAtributosExceptions("Tipo nao aplicavel.");
+            } else {
                 throw new EmpregadoAtributosExceptions("Tipo invalido.");
             }
-            if (tipo.equalsIgnoreCase("comissionado")){
-                throw new EmpregadoAtributosExceptions("Tipo nao aplicavel");
-            }
-
+        }
 
 
             Empregado empregado= new Horista(nome,endereco,tipo,salario);
@@ -113,17 +117,12 @@ Quando você usa instanceof, está verificando se o objeto referenciado por uma 
 
 
         }
-        else{
-            throw new EmpregadoAtributosExceptions("Tipo invalido.");
-        }
 
-
-
-
-    }
 
 
     public static String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {
+        salario = salario.replace(',', '.');
+
         if (tipo.equals("comissionado")){
             if (nome.isBlank()){
                 throw new EmpregadoAtributosExceptions("Nome nao pode ser nulo.");
@@ -131,12 +130,7 @@ Quando você usa instanceof, está verificando se o objeto referenciado por uma 
             if (endereco.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Endereco nao pode ser nulo.");
             }
-            if (!tipo.equalsIgnoreCase("horista") && !tipo.equalsIgnoreCase("assalariado") && !tipo.equalsIgnoreCase("comissionado")) {
-                throw new EmpregadoAtributosExceptions("Tipo invalido.");
-            }
-            if (tipo.equalsIgnoreCase("horista") || tipo.equalsIgnoreCase("assalariado")){
-                throw new EmpregadoAtributosExceptions("Tipo nao aplicavel");
-            }
+
             if (salario.isEmpty()) throw new EmpregadoAtributosExceptions("Salario nao pode ser nulo.");
             if (!isNumeric(salario)) {
                 throw new EmpregadoAtributosExceptions("Salario deve ser numerico.");
@@ -162,7 +156,15 @@ Quando você usa instanceof, está verificando se o objeto referenciado por uma 
 
         }
         else{
-            throw new EmpregadoAtributosExceptions("Tipo invalido.");
+
+            if (tipo.equals("horista") || tipo.equals("assalariado")){
+                throw new EmpregadoAtributosExceptions("Tipo nao aplicavel.");
+            }
+            else  {
+                throw new EmpregadoAtributosExceptions("Tipo invalido.");
+            }
+
+
         }
 
 

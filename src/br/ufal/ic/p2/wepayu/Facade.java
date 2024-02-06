@@ -23,12 +23,10 @@ public class Facade {
     public String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
         String resultado = EmpregadoController.getAtributoEmpregado(emp, atributo);
 
-
         if (isNumeric(resultado)) {
 
             resultado = String.format("%.2f", Double.parseDouble(resultado));
         }
-
         return resultado;
     }
 
