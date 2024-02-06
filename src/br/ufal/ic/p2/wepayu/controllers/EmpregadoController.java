@@ -9,18 +9,57 @@ import br.ufal.ic.p2.wepayu.models.empregados.Horista;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class EmpregadoController {
     public static HashMap<String, Empregado> empregados = new HashMap<>();
 
+    public static void removerEmpregado(String emp) throws EmpregadoAtributosExceptions {
+        if (emp.isBlank()) {
+            throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
+        }
+
+
+        if (!empregados.containsKey(emp)) {
+            throw new EmpregadoAtributosExceptions("Empregado nao existe.");
+        }
+        else{
+            empregados.remove(emp);
+        }
+
+    }
+
+
+    public static String getEmpregadoPorNome(String nome, int indice) throws EmpregadoAtributosExceptions {
+        if (nome.isBlank()) {
+            throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
+        }
+
+
+        int count = 0;
+        for (Empregado empregado : empregados.values()) {
+            String nomeEmpregado = empregado.getNome();
+            if (nomeEmpregado.equals(nome)) {
+                if (count == indice) {
+                    return nomeEmpregado; // Retorna o nome do empregado encontrado
+                }
+                count++; // Incrementa o contador se o nome não corresponder ao índice fornecido
+            }
+        }
+
+        // Se o nome não for encontrado no índice fornecido, lança uma exceção
+        throw new EmpregadoAtributosExceptions("Nao ha empregado com esse nome.");
+    }
+
+
     public  static String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException{
         Empregado empregado = empregados.get(emp);
 
-
+    //PROBLEMA NESSES 2 PRIMEIROS IFS
         if(emp.isEmpty()){
             throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
         }
-        if((empregados.get(emp) == null)){
+        if(!empregados.containsKey(emp)){
             throw new EmpregadoAtributosExceptions("Empregado nao existe.");
         }
         if (!(Arrays.asList("nome", "endereco", "tipo", "salario", "sindicalizado", "comissao").contains(atributo))) {
@@ -118,8 +157,6 @@ public class EmpregadoController {
 
         }
 
-
-
     public static String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {
         salario = salario.replace(',', '.');
 
@@ -135,14 +172,14 @@ public class EmpregadoController {
             if (!isNumeric(salario)) {
                 throw new EmpregadoAtributosExceptions("Salario deve ser numerico.");
             }
-            if (Double.parseDouble(salario) < 0) {
+            if (Double.parseDouble(salario) < 0.00) {
                 throw new EmpregadoAtributosExceptions("Salario deve ser nao-negativo.");
             }
             if (comissao.isEmpty()) throw new EmpregadoAtributosExceptions("Comissao nao pode ser nula.");
             if (!isNumeric(comissao)) {
                 throw new EmpregadoAtributosExceptions("Comissao deve ser numerica.");
             }
-            if (Double.parseDouble(comissao) < 0) {
+            if (Double.parseDouble(comissao) < 0.00) {
                 throw new EmpregadoAtributosExceptions("Comissao deve ser nao-negativa.");
             }
 
@@ -179,4 +216,7 @@ public class EmpregadoController {
             return false;
         }
     }
+
+
+
 }

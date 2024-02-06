@@ -30,6 +30,20 @@ public class Facade {
         return resultado;
     }
 
+    public String getEmpregadoPorNome(String nome, int indice ) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+
+
+         return  EmpregadoController.getEmpregadoPorNome(nome, indice);
+
+    }
+
+    public void removerEmpregado(String emp) throws EmpregadoAtributosExceptions {
+        EmpregadoController.removerEmpregado(emp);
+    }
+
+
+
+
 
     public String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {
                 return EmpregadoController.criarEmpregado(nome,endereco,tipo,salario);

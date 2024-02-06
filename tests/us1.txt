@@ -41,10 +41,10 @@ expect false getAtributoEmpregado emp=${id2} atributo=sindicalizado
 id3=criarEmpregado nome="Joao da Silva" endereco="Rua dos Jooes, 333 - Campina Grande" \
 	tipo=horista salario=23,32
 expect 23,32 getAtributoEmpregado emp=${id3} atributo=salario
-
+#erro da 48 a 61
 # outros tipos de empregados
 id4=criarEmpregado nome="Mariazinha" endereco="Rua das Marias, 333 - Campina Grande" \
-	tipo=assalariado salario=2300,45
+tipo=assalariado salario=2300,45
 expect "Mariazinha" getAtributoEmpregado emp=${id4} atributo=nome
 expect "Rua das Marias, 333 - Campina Grande" getAtributoEmpregado emp=${id4} atributo=endereco
 expect assalariado getAtributoEmpregado emp=${id4} atributo=tipo
