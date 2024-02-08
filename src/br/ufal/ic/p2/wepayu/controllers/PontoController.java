@@ -2,9 +2,8 @@ package br.ufal.ic.p2.wepayu.controllers;
 
 import br.ufal.ic.p2.wepayu.Exception.EmpregadoAtributosExceptions;
 import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
-import br.ufal.ic.p2.wepayu.models.empregados.Ponto;
+import br.ufal.ic.p2.wepayu.models.Ponto;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
@@ -12,9 +11,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static br.ufal.ic.p2.wepayu.controllers.SistemaController.*;
+import static br.ufal.ic.p2.wepayu.utils.isDateWithinRange.isDateWithinRange;
+import static br.ufal.ic.p2.wepayu.utils.isValidDate.isValidDate;
 
 
 public class PontoController {
@@ -199,19 +199,6 @@ public class PontoController {
 
 
     }
-    private static boolean isValidDate(LocalDate date) {
-        int year = date.getYear();
-        int month = date.getMonthValue();
-        int day = date.getDayOfMonth();
 
-        return year >= 1500 && year <= 2024 && month >= 1 && month <= 12 && day >= 1 && day <= Month.of(month).length(Year.isLeap(year));
-    }
-
-    public static boolean isDateWithinRange(String dateToCheck, String startDate, String endDate) {
-        LocalDate date = LocalDate.parse(dateToCheck, DateTimeFormatter.ofPattern("d/M/yyyy"));
-        LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("d/M/yyyy"));
-        LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ofPattern("d/M/yyyy"));
-        return !date.isBefore(start) && !date.isAfter(end);
-    }
 
 }

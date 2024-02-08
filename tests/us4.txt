@@ -17,6 +17,7 @@ id3=criarEmpregado nome="Gaiato Vendedor" endereco="Rua dos Bufoes, 333 - Campin
 id4=criarEmpregado nome="Gorete" endereco="Rua das Marias, 333 - Campina Grande" \
 	tipo=assalariado salario=2300
 
+
 expect 0,00 getVendasRealizadas emp=${id1} dataInicial=1/1/2005 dataFinal=31/12/2005
 lancaVenda emp=${id1} data=1/1/2005 valor=800
 lancaVenda emp=${id1} data=2/1/2005 valor=850,5

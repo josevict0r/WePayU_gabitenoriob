@@ -5,14 +5,13 @@ import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
 import br.ufal.ic.p2.wepayu.controllers.EmpregadoController;
 import br.ufal.ic.p2.wepayu.controllers.PontoController;
 import br.ufal.ic.p2.wepayu.controllers.SistemaController;
+import br.ufal.ic.p2.wepayu.controllers.VendasController;
 import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
 
 import java.io.FileNotFoundException;
 
 public class Facade {
 
-   // SistemaController sistema = new SistemaController();
-   // EmpregadoController empregados = new EmpregadoController();
 
     //construtor facade
     public Facade() throws FileNotFoundException{
@@ -31,6 +30,16 @@ public class Facade {
         SistemaController.encerrarSistema();
     }
 
+
+    //<void> lancaVenda emp=<String> data=<String> valor=<String>
+
+    public void lancaVenda(String emp, String data, String valor) throws EmpregadoAtributosExceptions {
+        VendasController.lancaVenda(emp,data,valor);
+    }
+
+    public String getVendasRealizadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
+         return  VendasController.getVendasRealizadas(emp,dataInicial,dataFinal);
+    }
 
     public String getHorasExtrasTrabalhadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
        return PontoController.getHorasExtrasTrabalhadas(emp,dataInicial,dataFinal);

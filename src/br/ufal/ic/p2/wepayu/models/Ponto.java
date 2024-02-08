@@ -1,4 +1,4 @@
-package br.ufal.ic.p2.wepayu.models.empregados;
+package br.ufal.ic.p2.wepayu.models;
 
 import java.time.LocalDateTime;
 

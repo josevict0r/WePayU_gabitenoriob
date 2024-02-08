@@ -1,7 +1,8 @@
 package br.ufal.ic.p2.wepayu.controllers;
 
+import br.ufal.ic.p2.wepayu.models.Venda;
 import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
-import br.ufal.ic.p2.wepayu.models.empregados.Ponto;
+import br.ufal.ic.p2.wepayu.models.Ponto;
 
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -14,6 +15,10 @@ public class SistemaController {
     static ArrayList<Empregado> empregadosPersistencia = new ArrayList<Empregado>();
     static Map<String, List<Ponto>> pontosDosEmpregados = new HashMap<>();
     static Map<String, List<Ponto>> pontosDosEmpregadosPersistencia = new HashMap<>();
+
+    static Map<String, List<Venda>> vendasDosEmpregados = new HashMap<>();
+    static Map<String, List<Venda>> vendasDosEmpregadosPersistencia = new HashMap<>();
+
 
     public static void encerrarSistema() throws FileNotFoundException {
         XMLEncoder encoderEmp = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("empregados.xml")));
