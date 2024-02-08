@@ -11,17 +11,15 @@ import java.io.FileNotFoundException;
 
 public class Facade {
 
-    SistemaController sistema = new SistemaController();
-    EmpregadoController empregados = new EmpregadoController();
+   // SistemaController sistema = new SistemaController();
+   // EmpregadoController empregados = new EmpregadoController();
 
     //construtor facade
     public Facade() throws FileNotFoundException{
         // QUANDO ATIVA ISSO DA MIL PROBLEMAS DE NAO ACHAR O ARQUIVO
-        //SistemaController.iniciarSistema();
+        SistemaController.iniciarSistema();
 
     }
-
-
 
 
 
@@ -38,8 +36,8 @@ public class Facade {
        return PontoController.getHorasExtrasTrabalhadas(emp,dataInicial,dataFinal);
     }
 
-    public String getHorasTrabalhadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
-        return PontoController.getHorasTrabalhadas(emp,dataInicial,dataFinal);
+    public String getHorasNormaisTrabalhadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
+        return PontoController.getHorasNormaisTrabalhadas(emp,dataInicial,dataFinal);
     }
 
     public void lancaCartao(String emp, String data, String horas) throws EmpregadoAtributosExceptions {
@@ -73,13 +71,6 @@ public class Facade {
     public String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {
         return EmpregadoController.criarEmpregado(nome,endereco,tipo,salario,comissao);
     }
-    private static boolean isNumeric(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
+
 }
 

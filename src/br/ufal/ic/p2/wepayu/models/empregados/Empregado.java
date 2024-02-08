@@ -9,20 +9,18 @@ public class Empregado {
     private String endereco;
     private String tipo;
     private String salario;
+
     boolean sindicalizado;
-
-
-
     private UUID id;
 
-
+    public Empregado() {}
 
     public Empregado(String nome, String endereco, String tipo, String salario) throws EmpregadoNaoExisteException {
         this.nome = nome;
         this.endereco = endereco;
         this.tipo = tipo;
         this.salario = salario;
-       // this.sindicalizado = sindicalizado;
+        this.sindicalizado = false;
         this.id = UUID.randomUUID();
 
     }
@@ -56,6 +54,26 @@ public class Empregado {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setSalario(String salario) {
+        this.salario = salario;
+    }
+
+    public void setSindicalizado(boolean sindicalizado) {
+        this.sindicalizado = sindicalizado;
     }
 
 

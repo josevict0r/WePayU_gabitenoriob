@@ -9,8 +9,8 @@ public class Main {
       // persistencia n ta funcionando EasyAccept.main(new String[]{facade, "tests/us1_1.txt"});
      // okk EasyAccept.main(new String[]{facade, "tests/us2.txt"});
     // persistencia n ta funcionando EasyAccept.main(new String[]{facade, "tests/us2_1.txt"});
-   // 19 erros e sem persistencia prestando EasyAccept.main(new String[]{facade, "tests/us3.txt"});
-//        EasyAccept.main(new String[]{facade, "tests/us3_1.txt"});
+   // 8 erros  EasyAccept.main(new String[]{facade, "tests/us3.txt"});
+// EasyAccept.main(new String[]{facade, "tests/us3_1.txt"});
 //        EasyAccept.main(new String[]{facade, "tests/us4.txt"});
 //        EasyAccept.main(new String[]{facade, "tests/us4_1.txt"});
 //

@@ -48,6 +48,7 @@ expectError "Data invalida." lancaCartao emp=${id1} data=1/13/2005 horas=8
 expectError "Horas devem ser positivas." lancaCartao emp=${id1} data=1/12/2005 horas=0
 expectError "Horas devem ser positivas." lancaCartao emp=${id1} data=1/12/2005 horas=-1
 
+
 expectError "Empregado nao eh horista." getHorasNormaisTrabalhadas emp=${id3} dataInicial=1/1/2005 dataFinal=2/1/2005
 expectError "Empregado nao eh horista." getHorasNormaisTrabalhadas emp=${id4} dataInicial=1/1/2005 dataFinal=2/1/2005
 expectError "Data inicial invalida." getHorasNormaisTrabalhadas emp=${id1} dataInicial=41/1/2005 dataFinal=2/1/2005

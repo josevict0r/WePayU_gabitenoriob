@@ -45,16 +45,16 @@
             int count = 0;
             for (Empregado empregado : empregados.values()) {
                 String nomeEmpregado = empregado.getNome();
-                System.out.println(nomeEmpregado);
+                //System.out.println(nomeEmpregado);
                 if (nomeEmpregado.equals(nome)) {
                     if (count == indice) {
-                        return nomeEmpregado; // Retorna o nome do empregado encontrado
+                        return nomeEmpregado; // conferir se é p retornar NOME OU ID
                     }
-                    count++; // Incrementa o contador se o nome não corresponder ao índice fornecido
+                    count++;
                 }
             }
 
-            // Se o nome não for encontrado no índice fornecido, lança uma exceção
+
             throw new EmpregadoAtributosExceptions("Nao ha empregado com esse nome.");
         }
 
@@ -106,8 +106,12 @@
         }
 
         public static String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+
             // Substituir vírgulas por pontos no salário, se houver
-            salario = salario.replace(',', '.');
+            if(salario != null){
+                salario = salario.replace(',', '.');
+            }
+
 
             if (nome.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Nome nao pode ser nulo.");
@@ -158,9 +162,15 @@
         }
 
         public static String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {
+
             // Substituir vírgulas por pontos no salário e na comissão, se houver
-            salario = salario.replace(',', '.');
-            comissao = comissao.replace(',', '.');
+            if(salario!= null){
+                salario = salario.replace(',', '.');
+            }
+            if(comissao != null){
+                comissao = comissao.replace(',', '.');
+            }
+
 
             if (nome.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Nome nao pode ser nulo.");
