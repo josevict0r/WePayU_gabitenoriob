@@ -1,18 +1,19 @@
 package br.ufal.ic.p2.wepayu.models.empregados;
 
 import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
-import br.ufal.ic.p2.wepayu.Exception.EmpregadoAtributosExceptions;
 
-import java.util.HashMap;
 import java.util.UUID;
-import java.util.ArrayList;
 
 public class Empregado {
     private String nome;
     private String endereco;
     private String tipo;
     private String salario;
-    private boolean sindicalizado;
+    boolean sindicalizado;
+
+
+
+    private UUID id;
 
 
 
@@ -21,7 +22,8 @@ public class Empregado {
         this.endereco = endereco;
         this.tipo = tipo;
         this.salario = salario;
-
+       // this.sindicalizado = sindicalizado;
+        this.id = UUID.randomUUID();
 
     }
 
@@ -48,11 +50,12 @@ public class Empregado {
     }
 
 
-    public String addEmpregado() throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+    public String getId() {
+        return String.valueOf(id);
+    }
 
-
-        String id = UUID.randomUUID().toString();
-        return id;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
 
