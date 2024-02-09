@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="17.0.6" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="br.ufal.ic.p2.wepayu.models.empregados.Horista">
+    <void property="endereco">
+     <string>Rua dos Jooes, 333 - Campina Grande</string>
+    </void>
+    <void property="id">
+     <string>fe95d7ec-a6d7-45a4-ab1b-f1af0221ea25</string>
+    </void>
+    <void property="nome">
+     <string>Joao da Silva</string>
+    </void>
+    <void property="tipo">
+     <string>horista</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="br.ufal.ic.p2.wepayu.models.empregados.Horista">
+    <void property="endereco">
+     <string>Rua dos Jooes, 333 - Campina Grande</string>
+    </void>
+    <void property="id">
+     <string>86649cc6-dd34-4277-a20f-d335b7d551f1</string>
+    </void>
+    <void property="nome">
+     <string>Joao da Silva</string>
+    </void>
+    <void property="tipo">
+     <string>horista</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="br.ufal.ic.p2.wepayu.models.empregados.Horista">
+    <void property="endereco">
+     <string>Rua dos Jooes, 333 - Campina Grande</string>
+    </void>
+    <void property="id">
+     <string>c37c7d25-74ea-4e8e-9265-81376014d202</string>
+    </void>
+    <void property="nome">
+     <string>Joao da Silva</string>
+    </void>
+    <void property="tipo">
+     <string>horista</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="br.ufal.ic.p2.wepayu.models.empregados.Assalariado">
+    <void property="endereco">
+     <string>Rua das Marias, 333 - Campina Grande</string>
+    </void>
+    <void property="id">
+     <string>d501841a-6d52-4dde-9ca1-dfd0a9d2803a</string>
+    </void>
+    <void property="nome">
+     <string>Mariazinha</string>
+    </void>
+    <void property="tipo">
+     <string>assalariado</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="br.ufal.ic.p2.wepayu.models.empregados.Comissionado">
+    <void property="comissao">
+     <string>0.05</string>
+    </void>
+    <void property="endereco">
+     <string>Rua dos Bufoes, 333 - Campina Grande</string>
+    </void>
+    <void property="id">
+     <string>7562497e-0b6d-439a-ae58-6932cc1aa971</string>
+    </void>
+    <void property="nome">
+     <string>Gaiato Vendedor</string>
+    </void>
+    <void property="tipo">
+     <string>comissionado</string>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

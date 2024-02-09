@@ -20,7 +20,7 @@ import static br.ufal.ic.p2.wepayu.utils.isValidDate.isValidDate;
 public class PontoController {
 
 
-    public static String getHorasExtrasTrabalhadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
+    public static String getHorasExtrasTrabalhadas(String emp, String dataInicial, String dataFinal) throws Exception {
 
         //erros
         Empregado empregado = empregados.get(emp);
@@ -47,10 +47,10 @@ public class PontoController {
             if(dataInicio.isAfter(dataFim)){
                 throw new EmpregadoAtributosExceptions("Data inicial nao pode ser posterior aa data final.");
             }
-            if (!isValidDate(dataInicio) ) {
+            if (!isValidDate(String.valueOf(dataInicio)) ) {
                 throw new EmpregadoAtributosExceptions("Data inicial invalida.");
             }
-            if( !isValidDate(dataFim)){
+            if( !isValidDate(String.valueOf(dataFim))){
                 throw new EmpregadoAtributosExceptions("Data final invalida.");
             }
             if (pontos.stream().noneMatch(ponto -> isDateWithinRange(ponto.getData(), dataInicial, dataFinal))) {
@@ -87,7 +87,7 @@ public class PontoController {
 
     }
 
-    public static String getHorasNormaisTrabalhadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
+    public static String getHorasNormaisTrabalhadas(String emp, String dataInicial, String dataFinal) throws Exception {
         //erros
         Empregado empregado = empregados.get(emp);
         List<Ponto> pontos = pontosDosEmpregados.get(emp);
@@ -126,10 +126,10 @@ public class PontoController {
                     throw new EmpregadoAtributosExceptions("Data final invalida.");
                 }
             }
-            if (!isValidDate(dataInicio) ) {
+            if (!isValidDate(String.valueOf(dataInicio)) ) {
                 throw new EmpregadoAtributosExceptions("Data inicial invalida.");
             }
-            if( !isValidDate(dataFim)){
+            if( !isValidDate(String.valueOf(dataFim))){
                 throw new EmpregadoAtributosExceptions("Data final invalida.");
             }
 

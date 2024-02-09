@@ -12,6 +12,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import static br.ufal.ic.p2.wepayu.controllers.SistemaController.*;
 import static br.ufal.ic.p2.wepayu.utils.isValidDate.isValidDate;
 
@@ -59,7 +60,7 @@ public class VendasController {
 
     }
 
-    public static String getVendasRealizadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
+    public static String getVendasRealizadas(String emp, String dataInicial, String dataFinal) throws Exception {
         Empregado empregado = empregados.get(emp);
         if(empregado.getTipo() != "comissionado"){
             throw new EmpregadoAtributosExceptions("Empregado nao eh comissionado.");
@@ -81,10 +82,10 @@ public class VendasController {
             throw new EmpregadoAtributosExceptions("Data final invalida.");
         }
 
-        if (!isValidDate(dateInicial)) {
+        if (!isValidDate(String.valueOf(dateInicial))) {
             throw new EmpregadoAtributosExceptions("Data inicial invalida.");
         }
-        if(!isValidDate(dateFinal)){
+        if(!isValidDate(String.valueOf(dateFinal))){
             throw new EmpregadoAtributosExceptions("Data final invalida.");
         }
 

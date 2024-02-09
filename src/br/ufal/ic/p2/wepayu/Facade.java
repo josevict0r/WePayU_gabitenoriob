@@ -2,26 +2,19 @@ package br.ufal.ic.p2.wepayu;
 
 import br.ufal.ic.p2.wepayu.Exception.EmpregadoAtributosExceptions;
 import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
-import br.ufal.ic.p2.wepayu.controllers.EmpregadoController;
-import br.ufal.ic.p2.wepayu.controllers.PontoController;
-import br.ufal.ic.p2.wepayu.controllers.SistemaController;
-import br.ufal.ic.p2.wepayu.controllers.VendasController;
-import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
+import br.ufal.ic.p2.wepayu.controllers.*;
+
 
 import java.io.FileNotFoundException;
 
 public class Facade {
 
 
-    //construtor facade
     public Facade() throws FileNotFoundException{
-        // QUANDO ATIVA ISSO DA MIL PROBLEMAS DE NAO ACHAR O ARQUIVO
+        //SistemaController.encerrarSistema();
         SistemaController.iniciarSistema();
 
     }
-
-
-
     public void zerarSistema() throws FileNotFoundException {
         SistemaController.zerarSistema();
     }
@@ -30,22 +23,32 @@ public class Facade {
         SistemaController.encerrarSistema();
     }
 
+    public  void alteraEmpregado(String emp,String atributo, String idSindicato, String taxaSindical) throws EmpregadoAtributosExceptions {
+        EmpregadoController.alteraEmpregado(emp,"sindicalizado", idSindicato,taxaSindical);
+    }
+    public void lancaTaxaServico(String emp, String data,String valor) throws Exception {
+        ServicoController.lancaTaxaServico(emp,data,valor);
+    }
 
-    //<void> lancaVenda emp=<String> data=<String> valor=<String>
+    public  String getTaxasServico(String emp, String dataInicial, String dataFinal) throws Exception {
+        return ServicoController.getTaxasServico(emp,dataInicial,dataFinal);
+
+    }
+
 
     public void lancaVenda(String emp, String data, String valor) throws EmpregadoAtributosExceptions {
         VendasController.lancaVenda(emp,data,valor);
     }
 
-    public String getVendasRealizadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
+    public String getVendasRealizadas(String emp, String dataInicial, String dataFinal) throws Exception {
          return  VendasController.getVendasRealizadas(emp,dataInicial,dataFinal);
     }
 
-    public String getHorasExtrasTrabalhadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
+    public String getHorasExtrasTrabalhadas(String emp, String dataInicial, String dataFinal) throws Exception {
        return PontoController.getHorasExtrasTrabalhadas(emp,dataInicial,dataFinal);
     }
 
-    public String getHorasNormaisTrabalhadas(String emp, String dataInicial, String dataFinal) throws EmpregadoAtributosExceptions {
+    public String getHorasNormaisTrabalhadas(String emp, String dataInicial, String dataFinal) throws Exception {
         return PontoController.getHorasNormaisTrabalhadas(emp,dataInicial,dataFinal);
     }
 

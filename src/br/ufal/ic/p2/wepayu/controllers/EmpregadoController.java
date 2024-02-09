@@ -2,22 +2,26 @@
 
     import br.ufal.ic.p2.wepayu.Exception.EmpregadoAtributosExceptions;
     import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
+
     import br.ufal.ic.p2.wepayu.models.empregados.Assalariado;
     import br.ufal.ic.p2.wepayu.models.empregados.Comissionado;
     import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
     import br.ufal.ic.p2.wepayu.models.empregados.Horista;
 
-    import java.util.Arrays;
+    import java.beans.XMLDecoder;
+    import java.beans.XMLEncoder;
+    import java.io.*;
+    import java.util.*;
 
-    import java.util.UUID;
-    import java.util.regex.Matcher;
-    import java.util.regex.Pattern;
 
     import static br.ufal.ic.p2.wepayu.controllers.SistemaController.empregados;
     import static br.ufal.ic.p2.wepayu.controllers.SistemaController.empregadosPersistencia;
+    import static br.ufal.ic.p2.wepayu.utils.isNumeric.isNumeric;
 
     public class EmpregadoController {
-        //public static HashMap<String, Empregado> empregados = new HashMap<>();
+
+
+
 
         public static void removerEmpregado(String emp) throws EmpregadoAtributosExceptions {
             if (emp.isBlank()) {
@@ -48,7 +52,7 @@
                 //System.out.println(nomeEmpregado);
                 if (nomeEmpregado.equals(nome)) {
                     if (count == indice) {
-                        return nomeEmpregado; // conferir se é p retornar NOME OU ID
+                        return empregado.getId(); // conferir se é p retornar NOME OU ID
                     }
                     count++;
                 }
@@ -60,14 +64,15 @@
 
 
         public static String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+            System.out.println("oi" + emp);
             if (emp == null || emp.isEmpty()) {
                 throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
             }
 
             Empregado empregado = empregados.get(emp);
-            System.out.println(empregado);
+            //System.out.println(empregado.getNome());
 
-            if (empregado == null) {
+            if (empregados.get(emp) == null) {
                 throw new EmpregadoAtributosExceptions("Empregado nao existe.");
             }
 
@@ -107,7 +112,7 @@
 
         public static String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
 
-            // Substituir vírgulas por pontos no salário, se houver
+
             if(salario != null){
                 salario = salario.replace(',', '.');
             }
@@ -119,6 +124,7 @@
             if (endereco.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Endereco nao pode ser nulo.");
             }
+            if (salario == null) throw new EmpregadoAtributosExceptions("Salario nao pode ser nulo.");;
             if (salario.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Salario nao pode ser nulo.");
             }
@@ -154,8 +160,9 @@
 
             // Adiciona o empregado ao HashMap usando a identificação como chave
             empregados.put(id, empregado);
-            empregado.setId(UUID.fromString(id));
+            empregado.setId(id);
             empregadosPersistencia.add(empregado);
+
 
             // Retorna a identificação do empregado criado
             return id;
@@ -178,10 +185,10 @@
             if (endereco.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Endereco nao pode ser nulo.");
             }
-            if (salario.isBlank()) {
+            if (salario == null || salario.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Salario nao pode ser nulo.");
             }
-            if (comissao.isBlank()) {
+            if (comissao == null || comissao.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Comissao nao pode ser nula.");
             }
             if (Double.parseDouble(salario) < 0) {
@@ -190,11 +197,11 @@
             if (Double.parseDouble(comissao) < 0) {
                 throw new EmpregadoAtributosExceptions("Comissao deve ser nao-negativa.");
             }
-            if (!isNumeric(salario)) {
+            if (isNumeric(salario) == false) {
 
                 throw new EmpregadoAtributosExceptions("Salario deve ser numerico.");
             }
-            if (!isNumeric(comissao)) {
+            if (isNumeric(comissao) == false) {
 
                 throw new EmpregadoAtributosExceptions("Comissao deve ser numerica.");
             }
@@ -213,26 +220,30 @@
             // Gera uma identificação única para o empregado
             String id = empregado.getId();
 
-            // Adiciona o empregado ao HashMap usando a identificação como chave
             empregados.put(id, empregado);
-            empregado.setId(UUID.fromString(id));
+            empregado.setId(id);
             empregadosPersistencia.add(empregado);
 
-            // Retorna a identificação do empregado criado
+
             return id;
         }
 
 
-        public static boolean isNumeric(String str) {
-            try {
-                Double.parseDouble(str);
-                return true;
-            } catch (NumberFormatException e) {
-                return false;
+
+        public static void alteraEmpregado(String emp, String atributo, String idSindicato, String taxaSindical) throws EmpregadoAtributosExceptions {
+            Empregado empregado = empregados.get(emp);
+            if(emp == null){
+                throw new EmpregadoAtributosExceptions("Identificacao nao pode ser nula.");
+            }
+            if(empregado == null){
+                throw new EmpregadoAtributosExceptions("Empregado nao existe.");
+            }
+            else{
+                empregado.setSindicalizado(true);
+                empregado.setIdSindicato(idSindicato);
+                empregado.setTaxaSindical(taxaSindical);
             }
         }
-
-
     }
 
 

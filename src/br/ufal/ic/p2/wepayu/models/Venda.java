@@ -6,8 +6,7 @@ public class Venda {
     private String dataInicial;
     private String valor;
 
-    public Venda() {
-    }
+    public Venda() {}
 
     // Construtor
     public Venda(String dataInicial, String valor) {

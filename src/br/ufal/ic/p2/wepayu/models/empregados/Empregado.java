@@ -11,7 +11,13 @@ public class Empregado {
     private String salario;
 
     boolean sindicalizado;
-    private UUID id;
+
+
+    private String id;
+
+
+    private  String idSindicato;
+    private String taxaSindical;
 
     public Empregado() {}
 
@@ -19,9 +25,15 @@ public class Empregado {
         this.nome = nome;
         this.endereco = endereco;
         this.tipo = tipo;
-        this.salario = salario;
+        if(salario != null){
+            this.salario = salario;
+        }
+        else{
+            this.salario = "0,00";
+        }
+
         this.sindicalizado = false;
-        this.id = UUID.randomUUID();
+        this.id = String.valueOf(UUID.randomUUID());
 
     }
 
@@ -52,7 +64,7 @@ public class Empregado {
         return String.valueOf(id);
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -74,6 +86,26 @@ public class Empregado {
 
     public void setSindicalizado(boolean sindicalizado) {
         this.sindicalizado = sindicalizado;
+    }
+
+    public String getIdSindicato() {
+        return idSindicato;
+    }
+
+    public void setIdSindicato(String idSindicato) {
+        this.idSindicato = idSindicato;
+    }
+
+    public String getTaxaSindical() {
+        return taxaSindical;
+    }
+
+    public void setTaxaSindical(String taxaSindical) {
+        this.taxaSindical = taxaSindical;
+    }
+
+    public boolean isSindicalizado() {
+        return sindicalizado;
     }
 
 
