@@ -14,9 +14,9 @@ import java.io.*;
 import java.util.*;
 
 public class SistemaController {
-    static LinkedHashMap<String, Empregado> empregados = new LinkedHashMap<String, Empregado>();
+    public static LinkedHashMap<String, Empregado> empregados = new LinkedHashMap<String, Empregado>();
     static ArrayList<Empregado> empregadosPersistencia = new ArrayList<Empregado>();
-    static Map<String, List<Ponto>> pontosDosEmpregados = new HashMap<>();
+    public static Map<String, List<Ponto>> pontosDosEmpregados = new HashMap<>();
     static Map<String, List<Ponto>> pontosDosEmpregadosPersistencia = new HashMap<>();
 
     static Map<String, List<Venda>> vendasDosEmpregados = new HashMap<>();

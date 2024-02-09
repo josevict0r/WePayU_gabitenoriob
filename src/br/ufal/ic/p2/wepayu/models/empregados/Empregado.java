@@ -2,6 +2,7 @@ package br.ufal.ic.p2.wepayu.models.empregados;
 
 import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Empregado {
@@ -15,9 +16,39 @@ public class Empregado {
 
     private String id;
 
-
+/*Os seguintes atributos de um empregado podem ser alterados: nome, endereço, tipo (hourly,salaried,commisioned),
+ método de pagamento, se pertence ao sindicato ou não, identificação no sindicato, taxa sindica*/
     private  String idSindicato;
     private String taxaSindical;
+
+    public String getMetodoPagamento() {
+        return metodoPagamento;
+    }
+
+    public void setMetodoPagamento(String metodoPagamento) {
+        this.metodoPagamento = metodoPagamento;
+    }
+
+    public String getBanco() {
+        return banco;
+    }
+
+    public void setBanco(String banco) {
+        this.banco = banco;
+    }
+
+    public String getAgencia() {
+        return agencia;
+    }
+
+    public void setAgencia(String agencia) {
+        this.agencia = agencia;
+    }
+
+    private String metodoPagamento;
+
+    private String banco;
+     private String agencia;
 
     public Empregado() {}
 
@@ -55,7 +86,6 @@ public class Empregado {
     }
 
     public String getSalario() {
-        salario = salario.replace(',', '.');
         return salario;
     }
 
@@ -81,7 +111,7 @@ public class Empregado {
     }
 
     public void setSalario(String salario) {
-        this.salario = salario;
+        this.salario = Objects.requireNonNullElse(salario, "0,00");
     }
 
     public void setSindicalizado(boolean sindicalizado) {

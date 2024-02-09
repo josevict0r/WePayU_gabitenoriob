@@ -20,10 +20,10 @@ expectDifferent ${id1} echo ${id2}
 expect "Joao da Silva" getAtributoEmpregado emp=${id2} atributo=nome
 expect "Rua dos Jooes, 333 - Campina Grande" getAtributoEmpregado emp=${id2} atributo=endereco
 expect horista getAtributoEmpregado emp=${id2} atributo=tipo
-expect 23,00 getAtributoEmpregado emp=${id2} atributo=salario
+    expect 23,00 getAtributoEmpregado emp=${id2} atributo=salario
 
 id3=getEmpregadoPorNome nome="Joao da Silva" indice=3
-expect 23,32 getAtributoEmpregado emp=${id3} atributo=salario
+    expect 23,32 getAtributoEmpregado emp=${id3} atributo=salario
 
 id4=getEmpregadoPorNome nome="Mariazinha" indice=1
 expect "Mariazinha" getAtributoEmpregado emp=${id4} atributo=nome

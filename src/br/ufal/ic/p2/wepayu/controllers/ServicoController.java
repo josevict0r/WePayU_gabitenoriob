@@ -21,7 +21,7 @@ public class ServicoController {
 
         Empregado empregado = empregados.get(emp);
         if (empregado == null) {
-            throw new EmpregadoAtributosExceptions("Empregado nao existe.");
+            throw new EmpregadoAtributosExceptions("Membro nao existe.");
         }
 
         if (!empregado.getSindicalizado()) {

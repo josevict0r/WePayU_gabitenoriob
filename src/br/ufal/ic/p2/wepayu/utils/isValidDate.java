@@ -7,11 +7,10 @@ import java.time.Year;
 
 public class isValidDate {
     public static boolean isValidDate(String data) throws Exception {
-        // Verifica se a string tem o formato correto
-        if (!data.matches("^\\d{1,2}(\\/|-)\\d{1,2}(\\/|-)\\d{4}$")) {
+
+        if (!data.matches("^\\d{1,2}\\s*(\\/|-)\\s*\\d{1,2}\\s*(\\/|-)\\s*\\d{4}$")) {
             return false;
         }
-
         // Divide a string em dia, mês e ano
         String[] partesData = data.split("(\\/|-)");
         int dia = Integer.parseInt(partesData[0]);
@@ -33,6 +32,8 @@ public class isValidDate {
         if (mes == 2 && dia > maxDiasFevereiro) {
             return false;
         }
+
+        // Verifica se a string tem o formato correto
 
         // Se todos os testes passarem, a data é válida
         return true;

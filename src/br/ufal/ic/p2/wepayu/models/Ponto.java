@@ -1,6 +1,8 @@
 package br.ufal.ic.p2.wepayu.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Ponto {
     private String data;
@@ -9,9 +11,14 @@ public class Ponto {
     public Ponto(){}
 
     // Construtor
-    public Ponto(String entrada, String saida) {
+    public Ponto(String entrada, String horas) {
         this.data = entrada;
-        this.horas = horas;
+        if(horas != null){
+            this.horas = horas;
+        }
+        else{
+            this.horas = "0";
+        }
     }
 
     // Getters e Setters
@@ -19,16 +26,16 @@ public class Ponto {
         return data;
     }
 
-    public void setEntrada(LocalDateTime entrada) {
-        this.data = String.valueOf(entrada);
+    public void setEntrada(String entrada) {
+        this.data = entrada;
     }
 
     public String getHoras() {
         return horas;
     }
 
-    public void setSaida(String horas) {
-        this.horas = horas;
+    public void setHoras(String horas) {
+        this.horas = Objects.requireNonNullElse(horas, "0");
     }
 }
 

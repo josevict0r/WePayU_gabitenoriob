@@ -7,10 +7,6 @@
     import br.ufal.ic.p2.wepayu.models.empregados.Comissionado;
     import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
     import br.ufal.ic.p2.wepayu.models.empregados.Horista;
-
-    import java.beans.XMLDecoder;
-    import java.beans.XMLEncoder;
-    import java.io.*;
     import java.util.*;
 
 
@@ -38,24 +34,27 @@
         }
 
 
-
-
-
         public static String getEmpregadoPorNome(String nome, int indice) throws EmpregadoAtributosExceptions {
             if (nome.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
             }
 
+            System.out.println("nome e indice RECEBIDO:");
+            System.out.println(nome);
+            System.out.println(indice);
+
             int count = 0;
             for (Empregado empregado : empregados.values()) {
                 String nomeEmpregado = empregado.getNome();
-                //System.out.println(nomeEmpregado);
-                if (nomeEmpregado.equals(nome)) {
-                    if (count == indice) {
-                        return empregado.getId(); // conferir se é p retornar NOME OU ID
-                    }
-                    count++;
+                System.out.println("nome e indice:");
+                System.out.println(nomeEmpregado);
+                System.out.println(count);
+
+                if (nomeEmpregado.equals(nome) && count == indice) {
+                    return empregado.getId();
                 }
+
+                count++;
             }
 
 
@@ -64,7 +63,7 @@
 
 
         public static String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
-            System.out.println("oi" + emp);
+            //System.out.println("oi" + emp);
             if (emp == null || emp.isEmpty()) {
                 throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
             }
@@ -128,15 +127,17 @@
             if (salario.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Salario nao pode ser nulo.");
             }
-
-
-            if (Double.parseDouble(salario) < 0) {
-                throw new EmpregadoAtributosExceptions("Salario deve ser nao-negativo.");
-            }
             if (!isNumeric(salario)) {
 
                 throw new EmpregadoAtributosExceptions("Salario deve ser numerico.");
             }
+
+            double salarioDouble = Double.parseDouble(salario);
+            ;
+            if (salarioDouble < 0) {
+                throw new EmpregadoAtributosExceptions("Salario deve ser nao-negativo.");
+            }
+
 
             if (!tipo.equalsIgnoreCase("horista") && !tipo.equalsIgnoreCase("assalariado") && !tipo.equalsIgnoreCase("comissionado")) {
                 throw new EmpregadoAtributosExceptions("Tipo invalido.");
@@ -190,14 +191,7 @@
             }
             if (comissao == null || comissao.isBlank()) {
                 throw new EmpregadoAtributosExceptions("Comissao nao pode ser nula.");
-            }
-            if (Double.parseDouble(salario) < 0) {
-                throw new EmpregadoAtributosExceptions("Salario deve ser nao-negativo.");
-            }
-            if (Double.parseDouble(comissao) < 0) {
-                throw new EmpregadoAtributosExceptions("Comissao deve ser nao-negativa.");
-            }
-            if (isNumeric(salario) == false) {
+            }if (isNumeric(salario) == false) {
 
                 throw new EmpregadoAtributosExceptions("Salario deve ser numerico.");
             }
@@ -205,6 +199,16 @@
 
                 throw new EmpregadoAtributosExceptions("Comissao deve ser numerica.");
             }
+
+            double salarioDouble = Double.parseDouble(salario);
+            double comissaoDouble = Double.parseDouble(comissao);
+            if (salarioDouble < 0) {
+                throw new EmpregadoAtributosExceptions("Salario deve ser nao-negativo.");
+            }
+            if (comissaoDouble < 0) {
+                throw new EmpregadoAtributosExceptions("Comissao deve ser nao-negativa.");
+            }
+
 
             if (!tipo.equalsIgnoreCase("comissionado")) {
                 throw new EmpregadoAtributosExceptions("Tipo nao aplicavel.");
@@ -243,6 +247,17 @@
                 empregado.setIdSindicato(idSindicato);
                 empregado.setTaxaSindical(taxaSindical);
             }
+        }
+
+        public static void alteraEmpregado(String emp, String sindicalizado, String valor1) {
+
+        }
+
+        public static void alteraEmpregado(String emp, String sindicalizado, boolean valor1) {
+        }
+
+        public static void alteraEmpregado(String emp, String metodoPagamento, String banco, String banco1, String agencia, String contaCorrente) {
+
         }
     }
 

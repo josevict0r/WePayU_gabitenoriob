@@ -26,6 +26,18 @@ public class Facade {
     public  void alteraEmpregado(String emp,String atributo, String idSindicato, String taxaSindical) throws EmpregadoAtributosExceptions {
         EmpregadoController.alteraEmpregado(emp,"sindicalizado", idSindicato,taxaSindical);
     }
+    public  void alteraEmpregado(String emp,String atributo, String valor1) throws EmpregadoAtributosExceptions {
+        EmpregadoController.alteraEmpregado(emp,"sindicalizado",valor1);
+    }
+
+    public  void alteraEmpregado(String emp,String atributo, Boolean valor1) throws EmpregadoAtributosExceptions {
+        EmpregadoController.alteraEmpregado(emp,"sindicalizado",false);
+    }
+
+    public  void alteraEmpregado(String emp,String atributo, String valor1, String banco,String agencia, String contaCorrente) throws EmpregadoAtributosExceptions {
+        EmpregadoController.alteraEmpregado(emp,"metodoPagamento", "banco",banco,agencia,contaCorrente);
+    }
+
     public void lancaTaxaServico(String emp, String data,String valor) throws Exception {
         ServicoController.lancaTaxaServico(emp,data,valor);
     }
@@ -36,7 +48,7 @@ public class Facade {
     }
 
 
-    public void lancaVenda(String emp, String data, String valor) throws EmpregadoAtributosExceptions {
+    public void lancaVenda(String emp, String data, String valor) throws Exception {
         VendasController.lancaVenda(emp,data,valor);
     }
 
