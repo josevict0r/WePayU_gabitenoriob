@@ -18,42 +18,44 @@ import static br.ufal.ic.p2.wepayu.utils.isValidDate.isValidDate;
 
 public class VendasController {
 
-
+    static ArrayList<Venda> vendas = new ArrayList<Venda>();
     //O sistema anotará a informação do resultado de venda e a associará ao empregado correto.
     public static void lancaVenda(String emp, String data, String valor) throws Exception {
-        Empregado empregado = empregados.get(emp);
-        //erros
-        if(Double.parseDouble(valor) <= 0){
-            throw new EmpregadoAtributosExceptions("Valor deve ser positivo.");
-        }
-        if (emp.isEmpty()) {
+        if(emp.isEmpty()) {
             throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
-        } else if (empregado == null) {
+        }
+        if(empregados.get(emp) == null) {
             throw new EmpregadoAtributosExceptions("Empregado nao existe.");
         }
-         else if (empregado.getTipo() != "comissionado") {
+        if(!empregados.get(emp).getTipo().equals("comissionado")) {
             throw new EmpregadoAtributosExceptions("Empregado nao eh comissionado.");
         }
-        LocalDate dataInicio = LocalDate.parse(data, DateTimeFormatter.ofPattern("d/M/yyyy"));
+        String[] diaMesAnoStr = data.split("/");
+        ArrayList<Integer> diaMesAno = new ArrayList<Integer>();
+        diaMesAno.add(Integer.parseInt(diaMesAnoStr[0]));
+        diaMesAno.add(Integer.parseInt(diaMesAnoStr[1]));
+        diaMesAno.add(Integer.parseInt(diaMesAnoStr[2]));             //Convertendo a data para int pra poder fazer os testes de erro
+        data = (Integer.toString((int) diaMesAno.get(0)).concat("/" + Integer.toString((int)diaMesAno.get(1)))).concat("/" + Integer.toString((int)diaMesAno.get(2)));
+
+        if(diaMesAno.get(1) >= 13) throw new EmpregadoAtributosExceptions("Data invalida.");
 
 
-        if(!isValidDate(data)){
-            throw new EmpregadoAtributosExceptions("Data inicial invalida.");
-        }
 
-        //logica, add um ponto c essa data e hora p usario do id emp
-        else{
-            if (!vendasDosEmpregados.containsKey(emp)) {
-                vendasDosEmpregados.put(emp, new ArrayList<>());
-            }
-
-            Venda venda = new Venda(data, valor);
-            vendasDosEmpregados.get(emp).add(venda);
-
-        }
-
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("d/M/yyyy");
+        LocalDate dataobj;
+        dataobj = LocalDate.parse(data, formatoData);
+        String valorPonto = valor.replace(",", ".");
+        //System.out.println("valor q deveria colocar na venda -->" + valor);
+        double valorD = Double.parseDouble(valorPonto);
+        if(valorD<= 0) throw new EmpregadoAtributosExceptions("Valor deve ser positivo.");
+        //System.out.println("valor q coloca na venda -->" + valorD);
+        Venda venda = new Venda(emp, dataobj, valorD);
+        vendas.add(venda);
 
     }
+
+
+
 
     public static String getVendasRealizadas(String emp, String dataInicial, String dataFinal) throws Exception {
         Empregado empregado = empregados.get(emp);
@@ -61,44 +63,51 @@ public class VendasController {
             throw new EmpregadoAtributosExceptions("Empregado nao eh comissionado.");
         }
 
-        // Verifica se as datas iniciais são válidas
-        if (!isValidDate(dataInicial)) {
-            throw new EmpregadoAtributosExceptions("Data inicial invalida.");
+        double vendasRequisitadas = 0;
+        String[] diaMesAnoStrI = dataInicial.split("/");
+        ArrayList<Integer> diaMesAnoI = new ArrayList<Integer>();
+        diaMesAnoI.add(Integer.parseInt(diaMesAnoStrI[0]));
+        diaMesAnoI.add(Integer.parseInt(diaMesAnoStrI[1]));
+        diaMesAnoI.add(Integer.parseInt(diaMesAnoStrI[2]));
+
+        String[] diaMesAnoStrF = dataFinal.split("/");
+        ArrayList<Integer> diaMesAnoF = new ArrayList<Integer>();
+        diaMesAnoF.add(Integer.parseInt(diaMesAnoStrF[0]));
+        diaMesAnoF.add(Integer.parseInt(diaMesAnoStrF[1]));
+        diaMesAnoF.add(Integer.parseInt(diaMesAnoStrF[2]));
+
+
+        if(diaMesAnoI.get(0) > 31) throw new EmpregadoAtributosExceptions("Data inicial invalida.");
+        if(diaMesAnoF.get(1) == 2) {
+            if(diaMesAnoF.get(0) > 29) throw new EmpregadoAtributosExceptions("Data final invalida.");
         }
-
-        // Verifica se as datas finais são válidas
-        if (!isValidDate(dataFinal)) {
-            throw new EmpregadoAtributosExceptions("Data final invalida.");
+        if(diaMesAnoI.get(1) >= diaMesAnoF.get(1)){
+            if(diaMesAnoI.get(0) > diaMesAnoF.get(0)) throw new EmpregadoAtributosExceptions("Data inicial nao pode ser posterior aa data final.");
         }
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("d/M/yyyy");
+        LocalDate Inicial, Final;
 
-        // Converte as datas para objetos LocalDate
-        LocalDate dataInicio = LocalDate.parse(dataInicial, DateTimeFormatter.ofPattern("d/M/yyyy"));
-        LocalDate dataFim = LocalDate.parse(dataFinal, DateTimeFormatter.ofPattern("d/M/yyyy"));
+        Inicial = LocalDate.parse(dataInicial, formatoData);
+        Final = LocalDate.parse(dataFinal, formatoData);
 
-        // Verifica se a data final é anterior à data inicial
-        if (dataFim.isBefore(dataInicio)) {
-            throw new EmpregadoAtributosExceptions("Data inicial nao pode ser posterior aa data final.");
-        }
+        for(Venda venda : vendas) {
+            if(venda.getId().equals(emp)) {
+                if(venda.getId().equals(emp) && venda.getData().equals(Final)) break;
+                if (venda.getData().isEqual(Inicial) || (venda.getData().isAfter(Inicial) && venda.getData().isBefore(Final))) {//DA ERRADO DE UM DIA PRO OUTRO
+                    vendasRequisitadas += venda.getValor();
 
-        List<Venda> vendas = vendasDosEmpregados.get(emp);
-        if (vendas == null || vendas.isEmpty()) {
-            return "0,00"; // Retorna zero formatado com vírgula
-        }
-
-
-
-        double totalVendas = 0;
-        for (Venda venda : vendas) {
-            LocalDate dataVenda = LocalDate.parse(venda.getDataInicial(), DateTimeFormatter.ofPattern("d/M/yyyy"));
-            // Verifica se a data da venda está dentro do intervalo [dataInicio, dataFinal)
-            if (!dataVenda.isBefore(LocalDate.parse(dataInicial)) && dataVenda.isBefore(LocalDate.parse(dataFinal).plusDays(1))) {
-                totalVendas += Double.parseDouble(venda.getValor().replace(',', '.'));
+                }
             }
+
+
         }
+        String vendasRequisitadasStr = (Double.toString(vendasRequisitadas)).replace(".", ",");//0,00
+        String[] vendasRequisitadasStrsplit = vendasRequisitadasStr.split(",");
+        if(vendasRequisitadas - (int) vendasRequisitadas == 0) vendasRequisitadasStr = vendasRequisitadasStrsplit[0].concat(",00");
+        if(vendasRequisitadasStrsplit[1].length() == 2) vendasRequisitadasStr = vendasRequisitadasStrsplit[0].concat("," + vendasRequisitadasStrsplit[1]);
+        else vendasRequisitadasStr = vendasRequisitadasStrsplit[0].concat("," + vendasRequisitadasStrsplit[1] + "0");
 
-
-        // Formata o valor com vírgula antes de retornar
-        return String.format("%.2f", totalVendas).replace('.', ',');
+        return vendasRequisitadasStr;
     }
 
 

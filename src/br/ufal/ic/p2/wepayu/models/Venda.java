@@ -1,35 +1,27 @@
 package br.ufal.ic.p2.wepayu.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Venda {
-    private String dataInicial;
-    private String valor;
+    public String id;
+    public LocalDate data;
+    public double valor;
 
-    public Venda() {}
-
-    // Construtor
-    public Venda(String dataInicial, String valor) {
-        this.dataInicial = dataInicial;
+    public Venda(String id, LocalDate data, double valor) {
+        this.id = id;
+        this.data = data;
         this.valor = valor;
     }
 
-    public String getDataInicial() {
-        return dataInicial;
+    public String getId() {
+        return id;
     }
 
-    public void setDataInicial(String dataInicial) {
-        this.dataInicial = dataInicial;
+    public LocalDate getData() {
+        return data;
     }
 
-    public String getValor() {
+    public double getValor() {
         return valor;
     }
-
-    public void setValor(String valor) {
-        this.valor = valor;
-    }
 }
-
-// Getters e Setters
-

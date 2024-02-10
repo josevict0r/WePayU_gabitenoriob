@@ -23,21 +23,23 @@ public class Facade {
         SistemaController.encerrarSistema();
     }
 
-    public  void alteraEmpregado(String emp,String atributo, String idSindicato, String taxaSindical) throws EmpregadoAtributosExceptions {
-        EmpregadoController.alteraEmpregado(emp,"sindicalizado", idSindicato,taxaSindical);
-    }
+
+    //ok
     public  void alteraEmpregado(String emp,String atributo, String valor1) throws EmpregadoAtributosExceptions {
-        EmpregadoController.alteraEmpregado(emp,"sindicalizado",valor1);
+        EmpregadoController.alteraAtributoEmpregado(emp, atributo, valor1);
     }
-
+    //ok
     public  void alteraEmpregado(String emp,String atributo, Boolean valor1) throws EmpregadoAtributosExceptions {
-        EmpregadoController.alteraEmpregado(emp,"sindicalizado",false);
+       EmpregadoController.alteraEmpregado(emp,atributo,valor1);
     }
-
-    public  void alteraEmpregado(String emp,String atributo, String valor1, String banco,String agencia, String contaCorrente) throws EmpregadoAtributosExceptions {
-        EmpregadoController.alteraEmpregado(emp,"metodoPagamento", "banco",banco,agencia,contaCorrente);
+    //ok
+    public void alteraEmpregado(String emp, String atributo, boolean valor, String idSindicato, String taxaSindical) throws  EmpregadoAtributosExceptions {
+        EmpregadoController.alteraEmpregado(emp, atributo, valor, idSindicato, taxaSindical);
     }
-
+    //ok
+    public void alteraEmpregado(String emp, String atributo, String valor1, String banco, String agencia, String contaCorrente) {
+        EmpregadoController.adicionaMetodoPagamento(emp, atributo, valor1, banco, agencia, contaCorrente);
+    }
     public void lancaTaxaServico(String emp, String data,String valor) throws Exception {
         ServicoController.lancaTaxaServico(emp,data,valor);
     }
@@ -57,11 +59,11 @@ public class Facade {
     }
 
     public String getHorasExtrasTrabalhadas(String emp, String dataInicial, String dataFinal) throws Exception {
-       return PontoController.getHorasExtrasTrabalhadas(emp,dataInicial,dataFinal);
+       return PontoController.getHorasTrabalhadas(emp,dataInicial,dataFinal,0);
     }
 
     public String getHorasNormaisTrabalhadas(String emp, String dataInicial, String dataFinal) throws Exception {
-        return PontoController.getHorasNormaisTrabalhadas(emp,dataInicial,dataFinal);
+        return PontoController.getHorasTrabalhadas(emp,dataInicial,dataFinal,1);
     }
 
     public void lancaCartao(String emp, String data, String horas) throws EmpregadoAtributosExceptions {

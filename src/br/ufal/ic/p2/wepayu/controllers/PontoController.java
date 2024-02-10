@@ -17,141 +17,106 @@ import static br.ufal.ic.p2.wepayu.utils.isValidDate.isValidDate;
 
 public class PontoController {
 
-    public static String getHorasExtrasTrabalhadas(String emp, String dataInicial, String dataFinal) throws Exception {
-        Empregado empregado = empregados.get(emp);
-        List<Ponto> pontos = pontosDosEmpregados.get(emp);
+    static ArrayList<Ponto> pontos = new ArrayList<Ponto>();
 
-        // Verificações de segurança
-        if (empregado == null) {
-            throw new EmpregadoAtributosExceptions("Empregado nao existe.");
-        }
-        if (!"horista".equals(empregado.getTipo())) {
-            throw new EmpregadoAtributosExceptions("Empregado nao eh horista.");
-        }
-        if (pontos == null) {
-            return "0";
-        }
 
-        double totalHorasExtras = 0;
+    public static String getHorasTrabalhadas(String emp, String dataInicial, String dataFinal, int NormalOuExtra) throws Exception {
+        double horasNormais = 0;
+        double horasExtras = 0;
+        if(!empregados.get(emp).getTipo().equals("horista")) throw new EmpregadoAtributosExceptions("Empregado nao eh horista.");
 
-        // Converte as datas para objetos LocalDate
-        LocalDate dataInicio = LocalDate.parse(dataInicial, DateTimeFormatter.ofPattern("d/M/yyyy"));
-        LocalDate dataFim = LocalDate.parse(dataFinal, DateTimeFormatter.ofPattern("d/M/yyyy"));
 
-        if(!isValidDate(dataInicial)){
-            throw new EmpregadoAtributosExceptions("Data inicial invalida.");
+        String[] diaMesAnoStrI = dataInicial.split("/");
+        ArrayList<Integer> diaMesAnoI = new ArrayList<Integer>();
+        diaMesAnoI.add(Integer.parseInt(diaMesAnoStrI[0]));
+        diaMesAnoI.add(Integer.parseInt(diaMesAnoStrI[1]));
+        diaMesAnoI.add(Integer.parseInt(diaMesAnoStrI[2]));
+
+        String[] diaMesAnoStrF = dataFinal.split("/");
+        ArrayList<Integer> diaMesAnoF = new ArrayList<Integer>();
+        diaMesAnoF.add(Integer.parseInt(diaMesAnoStrF[0]));
+        diaMesAnoF.add(Integer.parseInt(diaMesAnoStrF[1]));
+        diaMesAnoF.add(Integer.parseInt(diaMesAnoStrF[2]));
+
+
+        if(diaMesAnoI.get(0) > 31) throw new EmpregadoAtributosExceptions("Data inicial invalida.");
+        if(diaMesAnoF.get(1) == 2) {
+            if(diaMesAnoF.get(0) > 29) throw new EmpregadoAtributosExceptions("Data final invalida.");
         }
-        if(!isValidDate(dataFinal)){
-            throw new EmpregadoAtributosExceptions("Data final invalida.");
-        }
-
-        if(dataInicio.isAfter(dataFim)){
-            throw new EmpregadoAtributosExceptions("Data inicial nao pode ser posterior aa data final.");
+        if(diaMesAnoI.get(1) >= diaMesAnoF.get(1)){
+            if(diaMesAnoI.get(0) > diaMesAnoF.get(0)) throw new EmpregadoAtributosExceptions("Data inicial nao pode ser posterior aa data final.");;
         }
 
-        for (Ponto ponto : pontos) {
-            LocalDate dataPonto = LocalDate.parse(ponto.getData(), DateTimeFormatter.ofPattern("d/M/yyyy"));
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("d/M/yyyy");
+        LocalDate Inicial, Final;
 
-            if (isDateWithinRange(dataPonto, LocalDate.from(dataInicio.atStartOfDay()), LocalDate.from(dataFim.atStartOfDay()))) {
-                double horas = Double.parseDouble(ponto.getHoras().replace('.', ','));
-                if (horas > 8) {
-                    totalHorasExtras += horas - 8;
+        Inicial = LocalDate.parse(dataInicial, formatoData);
+        Final = LocalDate.parse(dataFinal, formatoData);
+
+        for(Ponto ponto : pontos) {
+
+            if(ponto.getId().equals(emp)) {
+
+                if(ponto.getId().equals(emp) && ponto.getData().equals(Final)) break;
+                if (ponto.getData().isEqual(Inicial) || (ponto.getData().isAfter(Inicial) && ponto.getData().isBefore(Final))) {//DA ERRADO DE UM DIA PRO OUTRO
+                    if(ponto.getHoras() > 8) {
+                        horasNormais += 8;
+
+                        horasExtras += ponto.getHoras()-8;
+                        //((cartoes.get(i).getData().isAfter(Inicial) && cartoes.get(i).getData().isBefore(Final))
+                    }
+                    else horasNormais += ponto.getHoras();
                 }
+
             }
         }
-        if(totalHorasExtras == 0.0){
-            return "0";
-        }
-        else{
-            return String.valueOf(totalHorasExtras);
-        }
-
-    }
-
-    public static String getHorasNormaisTrabalhadas(String emp, String dataInicial, String dataFinal) throws Exception {
-        Empregado empregado = empregados.get(emp);
-        List<Ponto> pontos = pontosDosEmpregados.get(emp);
-
-        // Verificações de segurança
-        if (empregado == null) {
-            throw new EmpregadoAtributosExceptions("Empregado nao existe.");
-        }
-        if (!"horista".equals(empregado.getTipo())) {
-            throw new EmpregadoAtributosExceptions("Empregado nao eh horista.");
-        }
-        if (pontos == null) {
-            return "0";
-        }
-        // Converte as datas para objetos LocalDate
-        LocalDate dataInicio = LocalDate.parse(dataInicial, DateTimeFormatter.ofPattern("d/M/yyyy"));
-        LocalDate dataFim = LocalDate.parse(dataFinal, DateTimeFormatter.ofPattern("d/M/yyyy"));
-
-        if(!isValidDate(dataInicial)){
-            throw new EmpregadoAtributosExceptions("Data inicial invalida.");
-        }
-        if(!isValidDate(dataFinal)){
-            throw new EmpregadoAtributosExceptions("Data final invalida.");
+        String horasNormaisStr = (Double.toString(horasNormais)).replace(".", ",");
+        if(horasNormais - (int) horasNormais == 0) {
+            String[] horasNormaisStrsplit = horasNormaisStr.split(",");
+            horasNormaisStr = horasNormaisStrsplit[0];
         }
 
-        if(dataInicio.isAfter(dataFim)){
-            throw new EmpregadoAtributosExceptions("Data inicial nao pode ser posterior aa data final.");
+        String horasExtrasStr = (Double.toString(horasExtras)).replace(".", ",");
+        if(horasExtras - (int) horasExtras == 0) {
+            String[] horasExtrasStrsplit = horasExtrasStr.split(",");
+            horasExtrasStr = horasExtrasStrsplit[0];
         }
 
-        double totalHorasNormais = 0;
-
-        for (Ponto ponto : pontos) {
-            LocalDate dataPonto = LocalDate.parse(ponto.getData(), DateTimeFormatter.ofPattern("d/M/yyyy"));
-
-            if (isDateWithinRange(dataPonto, LocalDate.from(dataInicio.atStartOfDay()), LocalDate.from(dataFim.atStartOfDay()))) {
-                double horas = Double.parseDouble(ponto.getHoras().replace(".",","));
-                totalHorasNormais += Math.min(horas, 8); // Limita a 8 horas por dia
-            }
-        }
-
-        // Ajuste para considerar apenas as horas do dia 1 se a data final for igual à data inicial
-        if (dataFinal.equals(dataInicial)) {
-            totalHorasNormais = Math.min(totalHorasNormais, 8);
-        }
-
-        // Retorno do valor inteiro, sem pontos ou vírgulas
-        return String.valueOf((int) totalHorasNormais);
+        //System.out.println("---->normais = " + horasNormais);
+        //System.out.println("---->extras = " + horasExtras);
+        if(NormalOuExtra == 1) return horasNormaisStr;
+        else return horasExtrasStr;
     }
 
 
     public static void lancaCartao(String emp, String data, String horas) throws EmpregadoAtributosExceptions {
-        Empregado empregado = empregados.get(emp);
-
-        // Verificações de segurança
-        if (emp == null || emp.isEmpty()) {
+        double horasNum = Double.parseDouble(horas.replace(",", "."));
+        if(emp.isEmpty()) {
             throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
         }
-        if (empregado == null) {
+        if(empregados.get(emp) == null) {
             throw new EmpregadoAtributosExceptions("Empregado nao existe.");
         }
-        if (!"horista".equals(empregado.getTipo())) {
+        if(!empregados.get(emp).getTipo().equals("horista")) {
             throw new EmpregadoAtributosExceptions("Empregado nao eh horista.");
         }
-        if (horas == null || horas.isEmpty()) {
-            throw new EmpregadoAtributosExceptions("Horas nao podem ser nulas.");
-        }
-        double horasLancamento;
-        try {
-            horasLancamento = Double.parseDouble(horas.replace(',', '.'));
-            if (horasLancamento <= 0) {
-                throw new EmpregadoAtributosExceptions("Horas devem ser positivas.");
-            }
-        } catch (NumberFormatException e) {
-            throw new EmpregadoAtributosExceptions("Horas invalidas.");
-        }
+        String[] diaMesAnoStr = data.split("/");
+        ArrayList<Integer> diaMesAno = new ArrayList<Integer>();
+        diaMesAno.add(Integer.parseInt(diaMesAnoStr[0]));
+        diaMesAno.add(Integer.parseInt(diaMesAnoStr[1]));
+        diaMesAno.add(Integer.parseInt(diaMesAnoStr[2]));             //Convertendo a data para int pra poder fazer os testes de erro
+        data = (Integer.toString((int) diaMesAno.get(0)).concat("/" + Integer.toString((int)diaMesAno.get(1)))).concat("/" + Integer.toString((int)diaMesAno.get(2)));
+        //System.out.println("---->" + diaMesAno.get(1));
+        //System.out.println(data);
+        if(diaMesAno.get(1) >= 13) throw new EmpregadoAtributosExceptions("Data invalida.");
+        if(horasNum <= 0) throw new EmpregadoAtributosExceptions("Horas devem ser positivas.");
 
-        // Converte a data para objeto LocalDate
-        try {
-            LocalDate dataLancamento = LocalDate.parse(data, DateTimeFormatter.ofPattern("d/M/yyyy"));
-        } catch (DateTimeParseException e) {
-            throw new EmpregadoAtributosExceptions("Data invalida.");
-        }
 
-        // Adiciona um novo ponto para o empregado
-        pontosDosEmpregados.computeIfAbsent(emp, k -> new ArrayList<>()).add(new Ponto(data, horas));
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("d/M/yyyy");
+        LocalDate dataobj;
+        dataobj = LocalDate.parse(data, formatoData);
+
+        Ponto ponto = new Ponto(dataobj, horasNum, emp);
+        pontos.add(ponto);
     }
 }
