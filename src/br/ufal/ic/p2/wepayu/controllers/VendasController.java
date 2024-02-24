@@ -1,34 +1,30 @@
 package br.ufal.ic.p2.wepayu.controllers;
 
-import br.ufal.ic.p2.wepayu.Exception.EmpregadoAtributosExceptions;
-import br.ufal.ic.p2.wepayu.models.Ponto;
+import br.ufal.ic.p2.wepayu.exceptions.*;
 import br.ufal.ic.p2.wepayu.models.Venda;
 import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
 
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.List;
 
 
 import static br.ufal.ic.p2.wepayu.controllers.SistemaController.*;
-import static br.ufal.ic.p2.wepayu.utils.isValidDate.isValidDate;
 
 public class VendasController {
 
     static ArrayList<Venda> vendas = new ArrayList<Venda>();
-    //O sistema anotará a informação do resultado de venda e a associará ao empregado correto.
+
     public static void lancaVenda(String emp, String data, String valor) throws Exception {
         if(emp.isEmpty()) {
-            throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
+            throw new IdentificacaoNula();
         }
         if(empregados.get(emp) == null) {
-            throw new EmpregadoAtributosExceptions("Empregado nao existe.");
+            throw new EmpregadoNaoExisteException();
         }
         if(!empregados.get(emp).getTipo().equals("comissionado")) {
-            throw new EmpregadoAtributosExceptions("Empregado nao eh comissionado.");
+            throw new NaoComissionado();
         }
         String[] diaMesAnoStr = data.split("/");
         ArrayList<Integer> diaMesAno = new ArrayList<Integer>();
@@ -37,7 +33,7 @@ public class VendasController {
         diaMesAno.add(Integer.parseInt(diaMesAnoStr[2]));             //Convertendo a data para int pra poder fazer os testes de erro
         data = (Integer.toString((int) diaMesAno.get(0)).concat("/" + Integer.toString((int)diaMesAno.get(1)))).concat("/" + Integer.toString((int)diaMesAno.get(2)));
 
-        if(diaMesAno.get(1) >= 13) throw new EmpregadoAtributosExceptions("Data invalida.");
+        if(diaMesAno.get(1) >= 13) throw new DataInvalida();
 
 
 
@@ -47,7 +43,7 @@ public class VendasController {
         String valorPonto = valor.replace(",", ".");
         //System.out.println("valor q deveria colocar na venda -->" + valor);
         double valorD = Double.parseDouble(valorPonto);
-        if(valorD<= 0) throw new EmpregadoAtributosExceptions("Valor deve ser positivo.");
+        if(valorD<= 0) throw new ValorPositivo();
         //System.out.println("valor q coloca na venda -->" + valorD);
         Venda venda = new Venda(emp, dataobj, valorD);
         vendas.add(venda);
@@ -60,7 +56,7 @@ public class VendasController {
     public static String getVendasRealizadas(String emp, String dataInicial, String dataFinal) throws Exception {
         Empregado empregado = empregados.get(emp);
         if (!"comissionado".equals(empregado.getTipo())) {
-            throw new EmpregadoAtributosExceptions("Empregado nao eh comissionado.");
+            throw new NaoComissionado();
         }
 
         double vendasRequisitadas = 0;
@@ -77,12 +73,12 @@ public class VendasController {
         diaMesAnoF.add(Integer.parseInt(diaMesAnoStrF[2]));
 
 
-        if(diaMesAnoI.get(0) > 31) throw new EmpregadoAtributosExceptions("Data inicial invalida.");
+        if(diaMesAnoI.get(0) > 31) throw new DataInicialInvalida();
         if(diaMesAnoF.get(1) == 2) {
-            if(diaMesAnoF.get(0) > 29) throw new EmpregadoAtributosExceptions("Data final invalida.");
+            if(diaMesAnoF.get(0) > 29) throw new DataFinalInvalida();
         }
         if(diaMesAnoI.get(1) >= diaMesAnoF.get(1)){
-            if(diaMesAnoI.get(0) > diaMesAnoF.get(0)) throw new EmpregadoAtributosExceptions("Data inicial nao pode ser posterior aa data final.");
+            if(diaMesAnoI.get(0) > diaMesAnoF.get(0)) throw new DataInicialPosterior();
         }
         DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("d/M/yyyy");
         LocalDate Inicial, Final;

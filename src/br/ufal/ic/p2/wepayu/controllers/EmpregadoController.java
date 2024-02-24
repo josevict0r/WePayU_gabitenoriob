@@ -1,14 +1,12 @@
     package br.ufal.ic.p2.wepayu.controllers;
 
-    import br.ufal.ic.p2.wepayu.Exception.EmpregadoAtributosExceptions;
-    import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
+    import br.ufal.ic.p2.wepayu.exceptions.*;
 
     import br.ufal.ic.p2.wepayu.models.Banco;
     import br.ufal.ic.p2.wepayu.models.Sindicato;
-    import br.ufal.ic.p2.wepayu.models.empregados.Assalariado;
     import br.ufal.ic.p2.wepayu.models.empregados.Comissionado;
     import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
-    import br.ufal.ic.p2.wepayu.models.empregados.Horista;
+
     import java.util.*;
 
 
@@ -22,14 +20,14 @@
 
 
         //ok
-        public static void removerEmpregado(String emp) throws EmpregadoAtributosExceptions {
+        public static void removerEmpregado(String emp) throws IdentificacaoNula, EmpregadoNaoExisteException {
             if (emp.isBlank()) {
-                throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
+                throw new IdentificacaoNula();
             }
 
 
             if (!empregados.containsKey(emp)) {
-                throw new EmpregadoAtributosExceptions("Empregado nao existe.");
+                throw new EmpregadoNaoExisteException();
             } else {
                 empregados.remove(emp);
             }
@@ -37,8 +35,8 @@
         }
 
         //ok
-        public static String getEmpregadoPorNome(String nome, int indice) throws EmpregadoAtributosExceptions {
-            String idAchado = null;
+        public static String getEmpregadoPorNome(String nome, int indice) throws NaoExisteNome {
+           String idAchado;
 
 
             for (String key: empregados.keySet()) {
@@ -52,20 +50,20 @@
 
                 }
             }
-            throw new EmpregadoAtributosExceptions("Nao ha empregado com esse nome.");
+            throw new NaoExisteNome();
 
         }
 
         //ok
-        public static String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+        public static String getAtributoEmpregado(String emp, String atributo) throws EmpregadoNaoExisteException, IdentificacaoNula, AtributoNaoExiste {
             String resultado = null;
             Empregado buscado = empregados.get(emp);
 
             if(emp.isEmpty()) {
-                throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
+                throw new IdentificacaoNula();
             }
             if(empregados.get(emp) == null) {
-                throw new EmpregadoAtributosExceptions("Empregado nao existe.");
+                throw new EmpregadoNaoExisteException();
             }
 
             if(atributo.equals("nome")) {
@@ -92,38 +90,37 @@
                 resultado = casted.getComissao();
             }
             else {
-                throw new EmpregadoAtributosExceptions("Atributo nao existe.");
+                throw new AtributoNaoExiste();
             }
             return resultado;
         }
         //ok
-        public static String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+        public static String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoNaoExisteException, SalarioNumerico, SalarioPositivo, SalarioNulo, TipoInvalido, TipoNaoAplicavel, EnderecoNulo, NomeNulo {
 
             Empregado novo = new Empregado(nome, endereco, tipo, salario);
             String id = UUID.randomUUID().toString();
 
             if(nome.isEmpty()) {
-                throw new EmpregadoAtributosExceptions("Nome nao pode ser nulo.");
+                throw new NomeNulo();
             }
             if(novo.getEndereco().isBlank()) {
-                throw new EmpregadoAtributosExceptions("Endereco nao pode ser nulo.");
+                throw new EnderecoNulo();
             }
-            //System.out.print(novo.tipo);
-            if(novo.getTipo().equals("comissionado")) {
-                throw new EmpregadoAtributosExceptions("Tipo nao aplicavel.");
+            if(tipo.equals("comissionado")) {
+                throw new TipoNaoAplicavel();
             }
             if(!(novo.getTipo().equals("horista")) && !(novo.getTipo().equals("assalariado"))) {
 
-                throw new EmpregadoAtributosExceptions("Tipo invalido.");
+                throw new TipoInvalido();
             }
             if(novo.getSalario().isBlank()) {
-                throw new EmpregadoAtributosExceptions("Salario nao pode ser nulo.");
+                throw new SalarioNulo();
             }
             if(novo.getSalario().contains("-")) {
-                throw new EmpregadoAtributosExceptions("Salario deve ser nao-negativo.");
+                throw new SalarioPositivo();
             }
             if(!isNumeric(novo.getSalario().replace(",", "."))) {
-                throw new EmpregadoAtributosExceptions("Salario deve ser numerico.");
+                throw new SalarioNumerico();
             }
 
             empregados.put(id, novo);
@@ -133,46 +130,45 @@
             return id;
         }
         //ok
-        public static String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {
+        public static String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException, ComissaoPositiva, ComissaoNumerica, ComissaoNula, SalarioNumerico, SalarioPositivo, SalarioNulo, TipoInvalido, TipoNaoAplicavel, EnderecoNulo, NomeNulo {
 
             Empregado novo = new Comissionado(nome, endereco, tipo, salario, comissao);
             String id = UUID.randomUUID().toString();
             //char menos = novo.salario.charAt(0);
 
             if(nome.isEmpty()) {
-                throw new EmpregadoAtributosExceptions("Nome nao pode ser nulo.");
+                throw new NomeNulo();
             }
             if(novo.getEndereco().isBlank()) {
-                throw new EmpregadoAtributosExceptions("Endereco nao pode ser nulo.");
+                throw new EnderecoNulo();
             }
             //System.out.print(novo.tipo);
             Comissionado aux = (Comissionado)novo;
-            if(!(novo.getTipo().equals("comissionado"))) {
-                if(!(aux.getComissao().isBlank())) {
-                    throw new EmpregadoAtributosExceptions("Tipo nao aplicavel.");
-                }
-                else {
-                    throw new EmpregadoAtributosExceptions("Tipo invalido.");
-                }
+            if(tipo.equals("horista") || tipo.equals("assalariado")) {
+                throw new TipoNaoAplicavel();
+            }
+            if(!(novo.getTipo().equals("horista")) && !(novo.getTipo().equals("assalariado")) && !(novo.getTipo().equals("comissionado"))) {
+
+                throw new TipoInvalido();
             }
             if(novo.getSalario().isBlank()) {
-                throw new EmpregadoAtributosExceptions("Salario nao pode ser nulo.");
+                throw new SalarioNulo();
             }
             if(novo.getSalario().contains("-")) {
-                throw new EmpregadoAtributosExceptions("Salario deve ser nao-negativo.");
+                throw new SalarioPositivo();
             }
             if(!isNumeric(novo.getSalario().replace(",", "."))) {
-                throw new EmpregadoAtributosExceptions("Salario deve ser numerico.");
+                throw new SalarioNumerico();
             }
             if(novo.getTipo().equals("comissionado")) {
                 if(comissao.isBlank()) {
-                    throw new EmpregadoAtributosExceptions("Comissao nao pode ser nula.");
+                    throw new ComissaoNula();
                 }
                 if(!isNumeric(comissao.replace(",", "."))) {
-                    throw new EmpregadoAtributosExceptions("Comissao deve ser numerica.");
+                    throw new ComissaoNumerica();
                 }
                 if(comissao.contains("-")) {
-                    throw new EmpregadoAtributosExceptions("Comissao deve ser nao-negativa.");
+                    throw new ComissaoPositiva();
                 }
             }
 
@@ -184,8 +180,8 @@
 
         //altera empregados
 
-        public static void alteraEmpregado(String emp, String atributo,boolean valor, String idSindicato, String taxaSindical) throws EmpregadoAtributosExceptions {
-                if(sindicatos.containsKey(idSindicato)) throw new EmpregadoAtributosExceptions("Ha outro empregado com esta identificacao de sindicato");
+        public static void alteraEmpregado(String emp, String atributo,boolean valor, String idSindicato, String taxaSindical) throws IdentificacaoRepetida {
+                if(sindicatos.containsKey(idSindicato)) throw new IdentificacaoRepetida();
 
                 String taxaSindicalPonto = taxaSindical.replace(",", ".");
                 double taxaSindicalD = Double.parseDouble(taxaSindicalPonto);
@@ -204,7 +200,7 @@
         }
 
 
-        public static void alteraAtributoEmpregado(String emp, String atributo, String valor1) throws EmpregadoAtributosExceptions {
+        public static void alteraAtributoEmpregado(String emp, String atributo, String valor1) throws NaoComissionado {
             if(atributo.equals("nome")) {
                 empregados.get(emp).setNome(valor1);
                 //System.out.println(empregados.get(emp));
@@ -213,15 +209,14 @@
                 empregados.get(emp).setEndereco(valor1);
             }
             if(atributo.equals("tipo")) {
-                empregados.get(emp).setTipo(valor1);//criar outro com a classe do tipo novo e excluir o que ja tem
+                empregados.get(emp).setTipo(valor1);
             }
             if(atributo.equals("salario")) {
-                //String salarioPonto = valor1.replace(",", ".");
-                //double salarioD = Double.parseDouble(salarioPonto);
+
                 empregados.get(emp).setSalario(valor1);
             }
             if(atributo.equals("comissao")) {
-                if(!empregados.get(emp).getTipo().equals("comissionado")) throw new EmpregadoAtributosExceptions("Empregado nao eh comissionado.");
+                if(!empregados.get(emp).getTipo().equals("comissionado")) throw new NaoComissionado();
                 empregados.get(emp).setTipo(valor1);
 
             }

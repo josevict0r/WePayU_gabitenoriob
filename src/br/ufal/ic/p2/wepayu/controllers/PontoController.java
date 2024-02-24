@@ -1,19 +1,13 @@
 package br.ufal.ic.p2.wepayu.controllers;
 
-import br.ufal.ic.p2.wepayu.Exception.EmpregadoAtributosExceptions;
+import br.ufal.ic.p2.wepayu.exceptions.*;
 import br.ufal.ic.p2.wepayu.models.Ponto;
-import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.List;
 
-import static br.ufal.ic.p2.wepayu.controllers.SistemaController.empregados;
-import static br.ufal.ic.p2.wepayu.controllers.SistemaController.pontosDosEmpregados;
-import static br.ufal.ic.p2.wepayu.utils.isDateWithinRange.isDateWithinRange;
-import static br.ufal.ic.p2.wepayu.utils.isValidDate.isValidDate;
+import static br.ufal.ic.p2.wepayu.controllers.SistemaController.*;
 
 public class PontoController {
 
@@ -23,7 +17,7 @@ public class PontoController {
     public static String getHorasTrabalhadas(String emp, String dataInicial, String dataFinal, int NormalOuExtra) throws Exception {
         double horasNormais = 0;
         double horasExtras = 0;
-        if(!empregados.get(emp).getTipo().equals("horista")) throw new EmpregadoAtributosExceptions("Empregado nao eh horista.");
+        if(!empregados.get(emp).getTipo().equals("horista")) throw new NaoHorista();
 
 
         String[] diaMesAnoStrI = dataInicial.split("/");
@@ -39,12 +33,12 @@ public class PontoController {
         diaMesAnoF.add(Integer.parseInt(diaMesAnoStrF[2]));
 
 
-        if(diaMesAnoI.get(0) > 31) throw new EmpregadoAtributosExceptions("Data inicial invalida.");
+        if(diaMesAnoI.get(0) > 31) throw new DataInicialInvalida();
         if(diaMesAnoF.get(1) == 2) {
-            if(diaMesAnoF.get(0) > 29) throw new EmpregadoAtributosExceptions("Data final invalida.");
+            if(diaMesAnoF.get(0) > 29) throw new DataFinalInvalida();
         }
         if(diaMesAnoI.get(1) >= diaMesAnoF.get(1)){
-            if(diaMesAnoI.get(0) > diaMesAnoF.get(0)) throw new EmpregadoAtributosExceptions("Data inicial nao pode ser posterior aa data final.");;
+            if(diaMesAnoI.get(0) > diaMesAnoF.get(0)) throw new DataInicialPosterior();
         }
 
         DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("d/M/yyyy");
@@ -63,7 +57,7 @@ public class PontoController {
                         horasNormais += 8;
 
                         horasExtras += ponto.getHoras()-8;
-                        //((cartoes.get(i).getData().isAfter(Inicial) && cartoes.get(i).getData().isBefore(Final))
+
                     }
                     else horasNormais += ponto.getHoras();
                 }
@@ -82,34 +76,30 @@ public class PontoController {
             horasExtrasStr = horasExtrasStrsplit[0];
         }
 
-        //System.out.println("---->normais = " + horasNormais);
-        //System.out.println("---->extras = " + horasExtras);
         if(NormalOuExtra == 1) return horasNormaisStr;
         else return horasExtrasStr;
     }
 
 
-    public static void lancaCartao(String emp, String data, String horas) throws EmpregadoAtributosExceptions {
+    public static void lancaCartao(String emp, String data, String horas) throws HoraPositiva, NaoHorista, EmpregadoNaoExisteException, IdentificacaoNula, DataInvalida {
         double horasNum = Double.parseDouble(horas.replace(",", "."));
         if(emp.isEmpty()) {
-            throw new EmpregadoAtributosExceptions("Identificacao do empregado nao pode ser nula.");
+            throw new IdentificacaoNula();
         }
         if(empregados.get(emp) == null) {
-            throw new EmpregadoAtributosExceptions("Empregado nao existe.");
+            throw new EmpregadoNaoExisteException();
         }
         if(!empregados.get(emp).getTipo().equals("horista")) {
-            throw new EmpregadoAtributosExceptions("Empregado nao eh horista.");
+            throw new NaoHorista();
         }
         String[] diaMesAnoStr = data.split("/");
         ArrayList<Integer> diaMesAno = new ArrayList<Integer>();
         diaMesAno.add(Integer.parseInt(diaMesAnoStr[0]));
         diaMesAno.add(Integer.parseInt(diaMesAnoStr[1]));
-        diaMesAno.add(Integer.parseInt(diaMesAnoStr[2]));             //Convertendo a data para int pra poder fazer os testes de erro
+        diaMesAno.add(Integer.parseInt(diaMesAnoStr[2]));
         data = (Integer.toString((int) diaMesAno.get(0)).concat("/" + Integer.toString((int)diaMesAno.get(1)))).concat("/" + Integer.toString((int)diaMesAno.get(2)));
-        //System.out.println("---->" + diaMesAno.get(1));
-        //System.out.println(data);
-        if(diaMesAno.get(1) >= 13) throw new EmpregadoAtributosExceptions("Data invalida.");
-        if(horasNum <= 0) throw new EmpregadoAtributosExceptions("Horas devem ser positivas.");
+        if(diaMesAno.get(1) >= 13) throw new DataInvalida();
+        if(horasNum <= 0) throw new HoraPositiva();
 
 
         DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("d/M/yyyy");
@@ -118,5 +108,7 @@ public class PontoController {
 
         Ponto ponto = new Ponto(dataobj, horasNum, emp);
         pontos.add(ponto);
+        pontosDosEmpregados.put(emp, pontos);
+        pontosDosEmpregadosPersistencia.put(emp,pontos);
     }
 }

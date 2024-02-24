@@ -1,17 +1,17 @@
 package br.ufal.ic.p2.wepayu;
 
-import br.ufal.ic.p2.wepayu.Exception.EmpregadoAtributosExceptions;
-import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
+import br.ufal.ic.p2.wepayu.exceptions.*;
 import br.ufal.ic.p2.wepayu.controllers.*;
 
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Facade {
 
 
-    public Facade() throws FileNotFoundException{
-        //SistemaController.encerrarSistema();
+    public Facade() throws IOException {
+       // SistemaController.encerrarSistema();
         SistemaController.iniciarSistema();
 
     }
@@ -25,15 +25,15 @@ public class Facade {
 
 
     //ok
-    public  void alteraEmpregado(String emp,String atributo, String valor1) throws EmpregadoAtributosExceptions {
+    public  void alteraEmpregado(String emp,String atributo, String valor1) throws  NaoComissionado {
         EmpregadoController.alteraAtributoEmpregado(emp, atributo, valor1);
     }
     //ok
-    public  void alteraEmpregado(String emp,String atributo, Boolean valor1) throws EmpregadoAtributosExceptions {
+    public  void alteraEmpregado(String emp,String atributo, Boolean valor1)  {
        EmpregadoController.alteraEmpregado(emp,atributo,valor1);
     }
     //ok
-    public void alteraEmpregado(String emp, String atributo, boolean valor, String idSindicato, String taxaSindical) throws  EmpregadoAtributosExceptions {
+    public void alteraEmpregado(String emp, String atributo, boolean valor, String idSindicato, String taxaSindical) throws  IdentificacaoRepetida {
         EmpregadoController.alteraEmpregado(emp, atributo, valor, idSindicato, taxaSindical);
     }
     //ok
@@ -66,35 +66,35 @@ public class Facade {
         return PontoController.getHorasTrabalhadas(emp,dataInicial,dataFinal,1);
     }
 
-    public void lancaCartao(String emp, String data, String horas) throws EmpregadoAtributosExceptions {
+    public void lancaCartao(String emp, String data, String horas) throws DataInvalida, HoraPositiva, NaoHorista, EmpregadoNaoExisteException, IdentificacaoNula {
         PontoController.lancaCartao(emp,data,horas);
     }
 
 
-    public String getAtributoEmpregado(String emp, String atributo) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+    public String getAtributoEmpregado(String emp, String atributo) throws  EmpregadoNaoExisteException, AtributoNaoExiste, IdentificacaoNula {
         String resultado = EmpregadoController.getAtributoEmpregado(emp, atributo);
 
 
         return resultado;
     }
 
-    public String getEmpregadoPorNome(String nome, int indice ) throws EmpregadoAtributosExceptions, EmpregadoNaoExisteException {
+    public String getEmpregadoPorNome(String nome, int indice ) throws  EmpregadoNaoExisteException, NaoExisteNome {
 
 
          return  EmpregadoController.getEmpregadoPorNome(nome, indice);
 
     }
 
-    public void removerEmpregado(String emp) throws EmpregadoAtributosExceptions {
+    public void removerEmpregado(String emp) throws  EmpregadoNaoExisteException, IdentificacaoNula {
         EmpregadoController.removerEmpregado(emp);
     }
 
 
-    public String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {
+    public String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoNaoExisteException, SalarioNulo, TipoInvalido, EnderecoNulo, SalarioNumerico, NomeNulo, SalarioPositivo, TipoNaoAplicavel {
                 return EmpregadoController.criarEmpregado(nome,endereco,tipo,salario);
     }
 
-    public String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException, EmpregadoAtributosExceptions {
+    public String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException,  SalarioNulo, TipoInvalido, EnderecoNulo, ComissaoNumerica, SalarioNumerico, NomeNulo, ComissaoPositiva, ComissaoNula, SalarioPositivo, TipoNaoAplicavel {
         return EmpregadoController.criarEmpregado(nome,endereco,tipo,salario,comissao);
     }
 

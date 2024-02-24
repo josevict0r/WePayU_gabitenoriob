@@ -1,11 +1,7 @@
 package br.ufal.ic.p2.wepayu.models.empregados;
 
-import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
 import br.ufal.ic.p2.wepayu.models.Banco;
 import br.ufal.ic.p2.wepayu.models.Sindicato;
-
-import java.util.Objects;
-import java.util.UUID;
 
 public class Empregado {
     private String nome;

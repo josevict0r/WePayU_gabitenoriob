@@ -1,6 +1,6 @@
 package br.ufal.ic.p2.wepayu.models.empregados;
 
-import br.ufal.ic.p2.wepayu.Exception.EmpregadoNaoExisteException;
+import br.ufal.ic.p2.wepayu.exceptions.EmpregadoNaoExisteException;
 
 public class Comissionado extends Empregado {
 

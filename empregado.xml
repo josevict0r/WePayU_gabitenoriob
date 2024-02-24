@@ -17,19 +17,19 @@
      </object>
     </void>
     <void property="endereco">
-     <string></string>
+     <string>Rua dos Jooes, 333 - Campina Grande</string>
     </void>
     <void property="id">
-     <string>557c6ed6-c808-49f8-b157-287fdbcc53b7</string>
+     <string>6ae07cf6-ba83-4ac5-93c7-ea172edae70a</string>
     </void>
     <void property="metodoPagamento">
      <string>banco</string>
     </void>
     <void property="nome">
-     <string></string>
+     <string>Joao da Silva</string>
     </void>
     <void property="salario">
-     <string>-1</string>
+     <string>23</string>
     </void>
     <void property="sindicalizado">
      <boolean>true</boolean>
@@ -45,7 +45,7 @@
      </object>
     </void>
     <void property="tipo">
-     <string>abc</string>
+     <string>horista</string>
     </void>
    </object>
   </void>
