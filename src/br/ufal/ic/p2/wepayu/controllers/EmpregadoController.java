@@ -7,6 +7,7 @@
     import br.ufal.ic.p2.wepayu.models.empregados.Comissionado;
     import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
 
+    import java.text.DecimalFormat;
     import java.util.*;
 
 
@@ -103,7 +104,7 @@
             }
             else if(atributo.equals("banco")){
                 if(buscado.getMetodoPagamento() == "banco"){
-                    resultado = String.valueOf(buscado.getBanco());
+                    resultado = String.valueOf(buscado.getBanco().getNome());
                 }
                 else{
                     throw new NaoBanco();
@@ -111,7 +112,13 @@
             }
             else if(atributo.equals("taxaSindical")){
                 if(buscado.getSindicato() != null){
-                    resultado = String.valueOf(buscado.getSindicato().getTaxaSindical());
+                    double taxaSindical = buscado.getSindicato().getTaxaSindical();
+
+                    // Formatando a taxa com duas casas decimais
+                    DecimalFormat df = new DecimalFormat("#0.00");
+                    String resultadoFormatado = df.format(taxaSindical);
+
+                    resultado = resultadoFormatado.replace(".", ",");
                 }
                 else{
                     throw new NaoSindicalizado();
@@ -230,10 +237,10 @@
             return id;
         }
 
-        //altera empregados
-
-        public static void alteraEmpregado(String emp, String atributo,boolean valor, String idSindicato, String taxaSindical) throws IdentificacaoRepetida, IdSindicatoNula, TaxaNumerica, TaxaNegativa, TaxaNula {
-
+        //altera empregados = faço um empregado a ser atualizado, atualizo ele e ponho ELE na lista de empregados empregados e empregadosPersistencia
+        //RECEBE SINDICALIZADO E TRUE AUTOMATICO
+        public static void alteraEmpregadoSindicalizado(String emp, String atributo,boolean valor, String idSindicato, String taxaSindical) throws IdentificacaoRepetida, IdSindicatoNula, TaxaNumerica, TaxaNegativa, TaxaNula, ValorTrueFalse {
+                Empregado atualizar = empregados.get(emp);
                 if(idSindicato.isEmpty()){
                     throw new IdSindicatoNula();
                 }
@@ -246,28 +253,31 @@
                 if(!isNumeric(taxaSindical)){
                     throw new TaxaNumerica();
                 }
+                if(valor != true && valor!= false){
+                    throw new ValorTrueFalse();
+                }
                 if(sindicatos.containsKey(idSindicato)) throw new IdentificacaoRepetida();
 
-                String taxaSindicalPonto = taxaSindical.replace(",", ".");
-                double taxaSindicalD = Double.parseDouble(taxaSindicalPonto);
+                double taxaSindicalD = Double.parseDouble(taxaSindical);
 
                 Sindicato sindicato = new Sindicato(idSindicato, taxaSindicalD);
                 sindicatos.put(sindicato.getIdSindicato(), sindicato);
 
-                empregados.get(emp).setSindicalizado(valor);
-                empregados.get(emp).setSindicato(sindicato);
-        }
+                atualizar.setSindicalizado(valor);
+                atualizar.setSindicato(sindicato);
 
-        public static void alteraEmpregado(String emp, String sindicalizado, String valor1) {
-
-            empregados.get(emp).setSindicalizado(Boolean.parseBoolean(valor1));
-            empregados.get(emp).setSindicato(null);
+                empregados.put(emp,atualizar);
+                empregadosPersistencia.add(atualizar);
         }
 
 
-        public static void alteraAtributoEmpregado(String emp, String atributo, String valor1) throws NaoComissionado, EmpregadoNaoExisteException, AtributoNaoExiste, NomeNulo, SalarioPositivo, SalarioNumerico, SalarioNulo, TipoInvalido, EnderecoNulo, ComissaoPositiva, ComissaoNumerica, ComissaoNula, MetodoInvalido {
-
-            if(empregados.get(emp) == null){
+        //ALTERA GERAL
+        public static void alteraAtributoEmpregado(String emp, String atributo, String valor1) throws NaoComissionado, EmpregadoNaoExisteException, AtributoNaoExiste, NomeNulo, SalarioPositivo, SalarioNumerico, SalarioNulo, TipoInvalido, EnderecoNulo, ComissaoPositiva, ComissaoNumerica, ComissaoNula, MetodoInvalido, IdentificacaoNula, ValorTrueFalse {
+            Empregado atualizar = empregados.get(emp);
+            if(emp.isEmpty()){
+                throw new IdentificacaoNula();
+            }
+            if(atualizar == null){
                 throw new EmpregadoNaoExisteException();
             }
 
@@ -276,7 +286,7 @@
                     throw new NomeNulo();
                 }
                 else{
-                    empregados.get(emp).setNome(valor1);
+                    atualizar.setNome(valor1);
                 }
 
 
@@ -285,14 +295,14 @@
                 if(valor1.isEmpty()){
                     throw new EnderecoNulo();
                 }
-                empregados.get(emp).setEndereco(valor1);
+                atualizar.setEndereco(valor1);
             }
             if(atributo.equals("tipo")) {
                 if(!valor1.contains("horista") && !valor1.contains("assalariado") && !valor1.contains("comissionado")){
                     throw new TipoInvalido();
                 }
                 //ver se tem q mudar algo em outro lugar, pq se mudou o tipo deve fazer o cast
-                empregados.get(emp).setTipo(valor1);
+                atualizar.setTipo(valor1);
             }
             if(atributo.equals("salario")) {
 
@@ -306,10 +316,10 @@
                     throw new SalarioPositivo();
                 }
 
-                empregados.get(emp).setSalario(valor1);
+                atualizar.setSalario(valor1);
             }
             if(atributo.equals("comissao")) {
-                if(empregados.get(emp).getTipo() != "comissionado") {
+                if(atualizar.getTipo() != "comissionado") {
                     throw new NaoComissionado();
                 }
                 if (valor1.isEmpty()){
@@ -324,7 +334,7 @@
 
 
                 else{
-                    empregados.get(emp).setTipo(valor1);
+                    atualizar.setTipo(valor1);
                 }
 
             }
@@ -333,30 +343,43 @@
                     throw new MetodoInvalido();
                 }
             }
+            if(atributo.equals("sindicalizado")){
+                if(valor1 != "true" && valor1 != "false"){
+                    throw new ValorTrueFalse();
+                }
+            }
             else{
                 throw new AtributoNaoExiste();
             }
 
+            empregados.put(emp,atualizar);
+            empregadosPersistencia.add(atualizar);
         }
-
-        public static void alteraEmpregado(String emp, String atributo, Boolean valor1) throws IdentificacaoNula, ValorTrueFalse, NaoComissionado {
-            if(emp.isBlank())
-            {
+        //RECEBE SEMPRE SINDICALIZADO E FALSE
+        public static void alteraEmpregado(String emp, String atributo, Boolean valor1) throws IdentificacaoNula, ValorTrueFalse, NaoComissionado, EmpregadoNaoExisteException {
+            Empregado atualizar = empregados.get(emp);
+            if(emp.isEmpty()){
                 throw new IdentificacaoNula();
+            }
+            if(atualizar == null){
+                throw new EmpregadoNaoExisteException();
             }
             if(valor1!= true && valor1!= false){
                 throw  new ValorTrueFalse();
             }
             if(atributo=="comissao"){
-                if(empregados.get(emp).getTipo() != "comissionado"){
+                if(atualizar.getTipo() != "comissionado"){
                     throw new NaoComissionado();
                 }
             }
-            empregados.get(emp).setSindicalizado(valor1);
-            empregados.get(emp).setSindicato(null);
+            atualizar.setSindicalizado(valor1);
+            atualizar.setSindicato(null);
+            empregados.put(emp,atualizar);
+            empregadosPersistencia.add(atualizar);
         }
 
-        public static void adicionaMetodoPagamento(String emp, String atributo, String valor1, String banco, String agencia, String contaCorrente) throws ContaNula, AgenciaNula, BancoNulo {
+        //É UM ALTERA Q JA RECEBE METODO E BANCO
+        public static void adicionaMetodoPagamento(String emp, String atributo, String valor1, String banco, String agencia, String contaCorrente) throws ContaNula, AgenciaNula, BancoNulo, EmpregadoNaoExisteException, IdentificacaoNula {
             Banco bancoobj = new Banco(banco, agencia, contaCorrente);
             if(banco.isEmpty()){
                 throw new BancoNulo();
@@ -367,12 +390,22 @@
             if(contaCorrente.isEmpty()){
                 throw new ContaNula();
             }
-            empregados.get(emp).setMetodoPagamento(valor1);;
+            Empregado atualizar = empregados.get(emp);
+            if(emp.isEmpty()){
+                throw new IdentificacaoNula();
+            }
+            if(atualizar == null){
+                throw new EmpregadoNaoExisteException();
+            }
+            atualizar.setMetodoPagamento(valor1);;
 
             if(valor1.equals("banco")) {
-                empregados.get(emp).setBanco(bancoobj);
+                atualizar.setBanco(bancoobj);
                 System.out.println("Esse é o banco novo add:" + bancoobj.getAgencia() + bancoobj.getNome() + bancoobj.getContaCorrente());
             }
+
+            empregadosPersistencia.add(atualizar);
+            empregados.put(emp,atualizar);
         }
     }
 

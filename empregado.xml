@@ -2,7 +2,7 @@
 <java version="17.0.6" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="br.ufal.ic.p2.wepayu.models.empregados.Empregado">
+   <object class="br.ufal.ic.p2.wepayu.models.empregados.Empregado" id="Empregado0">
     <void property="banco">
      <object class="br.ufal.ic.p2.wepayu.models.Banco">
       <void property="agencia">
@@ -20,7 +20,7 @@
      <string>Rua dos Jooes, 333 - Campina Grande</string>
     </void>
     <void property="id">
-     <string>a7c3c6c0-96e9-4665-8368-3fccf3c9c316</string>
+     <string>b10419dd-5870-4c0d-8160-f1f1309bbc77</string>
     </void>
     <void property="metodoPagamento">
      <string>banco</string>
@@ -35,6 +35,87 @@
      <string>horista</string>
     </void>
    </object>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
+  </void>
+  <void method="add">
+   <object idref="Empregado0"/>
   </void>
  </object>
 </java>

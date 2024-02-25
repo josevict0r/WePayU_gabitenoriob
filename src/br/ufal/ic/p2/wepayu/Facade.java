@@ -25,20 +25,23 @@ public class Facade {
 
 
     //ok
-    public  void alteraEmpregado(String emp,String atributo, String valor1) throws NaoComissionado, SalarioNulo, AtributoNaoExiste, TipoInvalido, EnderecoNulo, MetodoInvalido, ComissaoNumerica, EmpregadoNaoExisteException, NomeNulo, SalarioNumerico, ComissaoPositiva, SalarioPositivo, ComissaoNula {
+    public  void alteraEmpregado(String emp,String atributo, String valor1) throws NaoComissionado, SalarioNulo, AtributoNaoExiste, TipoInvalido, EnderecoNulo, MetodoInvalido, ComissaoNumerica, EmpregadoNaoExisteException, NomeNulo, SalarioNumerico, ComissaoPositiva, SalarioPositivo, ComissaoNula, IdentificacaoNula, ValorTrueFalse {
         EmpregadoController.alteraAtributoEmpregado(emp, atributo, valor1);
     }
     //ok
-    public  void alteraEmpregado(String emp,String atributo, Boolean valor1) throws ValorTrueFalse, IdentificacaoNula, NaoComissionado {
-       EmpregadoController.alteraEmpregado(emp,atributo,valor1);
+
+
+    //ALTERA
+    public  void alteraEmpregado(String emp,String atributo, Boolean valor1) throws ValorTrueFalse, IdentificacaoNula, NaoComissionado, EmpregadoNaoExisteException {
+       EmpregadoController.alteraEmpregado(emp,"sindicalizado",false);
     }
     //ok
-    public void alteraEmpregado(String emp, String atributo, boolean valor, String idSindicato, String taxaSindical) throws IdentificacaoRepetida, IdSindicatoNula, TaxaNula, TaxaNegativa, TaxaNumerica {
-        EmpregadoController.alteraEmpregado(emp, atributo, valor, idSindicato, taxaSindical);
+    public void alteraEmpregado(String emp, String atributo, boolean valor, String idSindicato, String taxaSindical) throws IdentificacaoRepetida, IdSindicatoNula, TaxaNula, TaxaNegativa, TaxaNumerica, ValorTrueFalse {
+        EmpregadoController.alteraEmpregadoSindicalizado(emp, "sindicalizado", true, idSindicato, taxaSindical);
     }
     //ok
-    public void alteraEmpregado(String emp, String atributo, String valor1, String banco, String agencia, String contaCorrente) throws BancoNulo, AgenciaNula, ContaNula {
-        EmpregadoController.adicionaMetodoPagamento(emp, atributo, valor1, banco, agencia, contaCorrente);
+    public void alteraEmpregado(String emp, String atributo, String valor1, String banco, String agencia, String contaCorrente) throws BancoNulo, AgenciaNula, ContaNula, EmpregadoNaoExisteException, IdentificacaoNula {
+        EmpregadoController.adicionaMetodoPagamento(emp, "metodoPagamento", "banco", banco, agencia, contaCorrente);
     }
     public void lancaTaxaServico(String emp, String data,String valor) throws Exception {
         ServicoController.lancaTaxaServico(emp,data,valor);

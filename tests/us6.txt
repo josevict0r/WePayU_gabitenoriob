@@ -108,14 +108,14 @@ expectError "Salario nao pode ser nulo." alteraEmpregado emp=${id1} atributo=sal
 expectError "Salario deve ser numerico." alteraEmpregado emp=${id1} atributo=salario valor=a
 expectError "Salario deve ser nao-negativo." alteraEmpregado emp=${id1} atributo=salario valor=-1
 alteraEmpregado emp=${id1} atributo=tipo valor=comissionado comissao=0,02
-expectError "Comissao nao pode ser nula." alteraEmpregado emp=${id1} atributo=comissao valor=""
-expectError "Comissao deve ser numerica." alteraEmpregado emp=${id1} atributo=comissao valor=a
-expectError "Comissao deve ser nao-negativa." alteraEmpregado emp=${id1} atributo=comissao valor=-1
+    expectError "Comissao nao pode ser nula." alteraEmpregado emp=${id1} atributo=comissao valor=""
+    expectError "Comissao deve ser numerica." alteraEmpregado emp=${id1} atributo=comissao valor=a
+    expectError "Comissao deve ser nao-negativa." alteraEmpregado emp=${id1} atributo=comissao valor=-1
 expectError "Metodo de pagamento invalido." alteraEmpregado emp=${id1} atributo=metodoPagamento valor=abc
 expectError "Banco nao pode ser nulo." alteraEmpregado emp=${id1} atributo=metodoPagamento valor1=banco banco="" agencia=1591-1 contaCorrente=51000-0
 expectError "Agencia nao pode ser nulo." alteraEmpregado emp=${id1} atributo=metodoPagamento valor1=banco banco="Banco do Brasil" agencia="" contaCorrente=51000-0
 expectError "Conta corrente nao pode ser nulo." alteraEmpregado emp=${id1} atributo=metodoPagamento valor1=banco banco="Banco do Brasil" agencia=1591-1 contaCorrente=""
-expectError "Valor deve ser true ou false." alteraEmpregado emp=${id1} atributo=sindicalizado valor=abc
+    expectError "Valor deve ser true ou false." alteraEmpregado emp=${id1} atributo=sindicalizado valor=abc
 expectError "Identificacao do sindicato nao pode ser nula." alteraEmpregado emp=${id1} atributo=sindicalizado valor=true idSindicato="" taxaSindical=30
 expectError "Taxa sindical nao pode ser nula." alteraEmpregado emp=${id1} atributo=sindicalizado valor=true idSindicato=s123 taxaSindical=""
 expectError "Taxa sindical deve ser numerica." alteraEmpregado emp=${id1} atributo=sindicalizado valor=true idSindicato=s123 taxaSindical=a
