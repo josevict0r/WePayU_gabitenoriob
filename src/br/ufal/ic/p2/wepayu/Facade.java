@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Facade {
 
 
-    public Facade() throws IOException {
+    public Facade() throws FileNotFoundException {
        // SistemaController.encerrarSistema();
         SistemaController.iniciarSistema();
 
@@ -25,19 +25,19 @@ public class Facade {
 
 
     //ok
-    public  void alteraEmpregado(String emp,String atributo, String valor1) throws  NaoComissionado {
+    public  void alteraEmpregado(String emp,String atributo, String valor1) throws NaoComissionado, SalarioNulo, AtributoNaoExiste, TipoInvalido, EnderecoNulo, MetodoInvalido, ComissaoNumerica, EmpregadoNaoExisteException, NomeNulo, SalarioNumerico, ComissaoPositiva, SalarioPositivo, ComissaoNula {
         EmpregadoController.alteraAtributoEmpregado(emp, atributo, valor1);
     }
     //ok
-    public  void alteraEmpregado(String emp,String atributo, Boolean valor1)  {
+    public  void alteraEmpregado(String emp,String atributo, Boolean valor1) throws ValorTrueFalse, IdentificacaoNula, NaoComissionado {
        EmpregadoController.alteraEmpregado(emp,atributo,valor1);
     }
     //ok
-    public void alteraEmpregado(String emp, String atributo, boolean valor, String idSindicato, String taxaSindical) throws  IdentificacaoRepetida {
+    public void alteraEmpregado(String emp, String atributo, boolean valor, String idSindicato, String taxaSindical) throws IdentificacaoRepetida, IdSindicatoNula, TaxaNula, TaxaNegativa, TaxaNumerica {
         EmpregadoController.alteraEmpregado(emp, atributo, valor, idSindicato, taxaSindical);
     }
     //ok
-    public void alteraEmpregado(String emp, String atributo, String valor1, String banco, String agencia, String contaCorrente) {
+    public void alteraEmpregado(String emp, String atributo, String valor1, String banco, String agencia, String contaCorrente) throws BancoNulo, AgenciaNula, ContaNula {
         EmpregadoController.adicionaMetodoPagamento(emp, atributo, valor1, banco, agencia, contaCorrente);
     }
     public void lancaTaxaServico(String emp, String data,String valor) throws Exception {
@@ -71,7 +71,7 @@ public class Facade {
     }
 
 
-    public String getAtributoEmpregado(String emp, String atributo) throws  EmpregadoNaoExisteException, AtributoNaoExiste, IdentificacaoNula {
+    public String getAtributoEmpregado(String emp, String atributo) throws EmpregadoNaoExisteException, AtributoNaoExiste, IdentificacaoNula, NaoSindicalizado, NaoBanco, NaoComissionado {
         String resultado = EmpregadoController.getAtributoEmpregado(emp, atributo);
 
 

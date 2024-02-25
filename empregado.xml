@@ -9,7 +9,7 @@
        <string>1591-1</string>
       </void>
       <void property="contaCorrente">
-       <string></string>
+       <string>51000-0</string>
       </void>
       <void property="nome">
        <string>Banco do Brasil</string>
@@ -20,7 +20,7 @@
      <string>Rua dos Jooes, 333 - Campina Grande</string>
     </void>
     <void property="id">
-     <string>6ae07cf6-ba83-4ac5-93c7-ea172edae70a</string>
+     <string>a7c3c6c0-96e9-4665-8368-3fccf3c9c316</string>
     </void>
     <void property="metodoPagamento">
      <string>banco</string>
@@ -30,19 +30,6 @@
     </void>
     <void property="salario">
      <string>23</string>
-    </void>
-    <void property="sindicalizado">
-     <boolean>true</boolean>
-    </void>
-    <void property="sindicato">
-     <object class="br.ufal.ic.p2.wepayu.models.Sindicato">
-      <void property="idSindicato">
-       <string></string>
-      </void>
-      <void property="taxaSindical">
-       <double>30.0</double>
-      </void>
-     </object>
     </void>
     <void property="tipo">
      <string>horista</string>

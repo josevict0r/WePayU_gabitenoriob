@@ -12,7 +12,9 @@ public class Empregado {
     private String id;
     private Sindicato sindicato;
     protected String metodoPagamento;
+
     protected Banco banco;
+
 
 
     public Empregado() {
@@ -27,7 +29,7 @@ public class Empregado {
             this.sindicalizado = false;
             this.id = null;
             this.sindicato = null;
-            this.metodoPagamento = null;
+            this.metodoPagamento = "emMaos";
             this.banco = null;
         }
 
