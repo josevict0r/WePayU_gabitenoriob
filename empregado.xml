@@ -2,34 +2,83 @@
 <java version="17.0.6" class="java.beans.XMLDecoder">
  <object class="java.util.ArrayList">
   <void method="add">
-   <object class="br.ufal.ic.p2.wepayu.models.empregados.Empregado" id="Empregado0">
-    <void property="banco">
-     <object class="br.ufal.ic.p2.wepayu.models.Banco">
-      <void property="agencia">
-       <string>1591-1</string>
-      </void>
-      <void property="contaCorrente">
-       <string>51000-0</string>
-      </void>
-      <void property="nome">
-       <string>Banco do Brasil</string>
-      </void>
-     </object>
+   <object class="br.ufal.ic.p2.wepayu.models.Empregado">
+    <void property="agendaPagamento">
+     <string>semanal 2 5</string>
     </void>
     <void property="endereco">
      <string>Rua dos Jooes, 333 - Campina Grande</string>
     </void>
     <void property="id">
-     <string>b10419dd-5870-4c0d-8160-f1f1309bbc77</string>
+     <string>608516b5-fed4-4df9-a272-bbb5158b7d7c</string>
     </void>
     <void property="metodoPagamento">
-     <string>banco</string>
+     <string>emMaos</string>
     </void>
     <void property="nome">
      <string>Joao da Silva</string>
     </void>
     <void property="salario">
-     <string>23</string>
+     <string>2300</string>
+    </void>
+    <void property="sindicalizado">
+     <boolean>true</boolean>
+    </void>
+    <void property="tipo">
+     <string>comissionado</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="br.ufal.ic.p2.wepayu.models.Empregado">
+    <void property="agendaPagamento">
+     <string>semanal 2 5</string>
+    </void>
+    <void property="endereco">
+     <string>Rua das Marias, 333 - Campina Grande</string>
+    </void>
+    <void property="id">
+     <string>1d8b9477-3ebc-4bb5-9f30-9938d7288553</string>
+    </void>
+    <void property="metodoPagamento">
+     <string>emMaos</string>
+    </void>
+    <void property="nome">
+     <string>Mariazinha</string>
+    </void>
+    <void property="salario">
+     <string>2300</string>
+    </void>
+    <void property="sindicalizado">
+     <boolean>true</boolean>
+    </void>
+    <void property="tipo">
+     <string>assalariado</string>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="br.ufal.ic.p2.wepayu.models.Empregado">
+    <void property="agendaPagamento">
+     <string>semanal 2 5</string>
+    </void>
+    <void property="endereco">
+     <string>Rua dos Bufoes, 333 - Campina Grande</string>
+    </void>
+    <void property="id">
+     <string>a58a7ca6-998c-4f8c-a532-100b871566a6</string>
+    </void>
+    <void property="metodoPagamento">
+     <string>emMaos</string>
+    </void>
+    <void property="nome">
+     <string>Gaiato Vendedor</string>
+    </void>
+    <void property="salario">
+     <string>1300</string>
+    </void>
+    <void property="sindicalizado">
+     <boolean>true</boolean>
     </void>
     <void property="tipo">
      <string>horista</string>
@@ -37,82 +86,32 @@
    </object>
   </void>
   <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
-  </void>
-  <void method="add">
-   <object idref="Empregado0"/>
+   <object class="br.ufal.ic.p2.wepayu.models.Empregado" id="Empregado0">
+    <void property="agendaPagamento">
+     <string>semanal 2 5</string>
+    </void>
+    <void property="endereco">
+     <string>Rua das Marias, 333 - Campina Grande</string>
+    </void>
+    <void property="id">
+     <string>622f31bb-3700-4303-b7e6-6f764022a5be</string>
+    </void>
+    <void property="metodoPagamento">
+     <string>emMaos</string>
+    </void>
+    <void property="nome">
+     <string>Gorete</string>
+    </void>
+    <void property="salario">
+     <string>1300</string>
+    </void>
+    <void property="sindicalizado">
+     <boolean>true</boolean>
+    </void>
+    <void property="tipo">
+     <string>horista</string>
+    </void>
+   </object>
   </void>
   <void method="add">
    <object idref="Empregado0"/>

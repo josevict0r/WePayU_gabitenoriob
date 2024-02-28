@@ -15,9 +15,11 @@ public class ServicoController {
 
     static ArrayList<Servico> taxas = new ArrayList<Servico>();
     static LinkedHashMap<String, Sindicato> sindicatos = new LinkedHashMap<String, Sindicato>();
+    
     public static void lancaTaxaServico(String emp, String data, String valor) throws Exception {
         if(emp.isEmpty()) throw new MembroNulo();
-        if(sindicatos.get(emp) == null) throw new MembroNaoExiste();
+        Sindicato pessoa = sindicatos.get(emp);
+        if(pessoa == null) throw new MembroNaoExiste();
 
 
         String[] diaMesAnoStr = data.split("/");

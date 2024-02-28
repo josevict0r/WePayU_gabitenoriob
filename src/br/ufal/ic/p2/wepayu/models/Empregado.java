@@ -1,7 +1,4 @@
-package br.ufal.ic.p2.wepayu.models.empregados;
-
-import br.ufal.ic.p2.wepayu.models.Banco;
-import br.ufal.ic.p2.wepayu.models.Sindicato;
+package br.ufal.ic.p2.wepayu.models;
 
 public class Empregado {
     private String nome;
@@ -12,15 +9,18 @@ public class Empregado {
     private String id;
     private Sindicato sindicato;
     protected String metodoPagamento;
+    protected String agendaPagamento;
+    
+
+    private String comissao;
+
 
     protected Banco banco;
-
-
 
     public Empregado() {
     }
 
-    public Empregado(String nome, String endereco, String tipo, String salario) {
+    public Empregado(String nome, String endereco, String tipo, String salario, String comissao) {
         {
             this.nome = nome;
             this.endereco = endereco;
@@ -31,6 +31,22 @@ public class Empregado {
             this.sindicato = null;
             this.metodoPagamento = "emMaos";
             this.banco = null;
+            if(this.tipo == "horista"){
+                this.agendaPagamento = "semanal 5";
+            }
+            else if(this.tipo == "assalariado"){
+                this.agendaPagamento = "mensal $";
+            }
+            else{
+                this.agendaPagamento = "semanal 2 5";
+            }
+
+            if(this.tipo == "comissionado"){
+                this.comissao = comissao;
+            }
+            else{
+                this.comissao = null;
+            }
         }
 
 
@@ -106,5 +122,19 @@ public class Empregado {
 
     public void setBanco(Banco banco) {
         this.banco = banco;
+    }
+    public String getComissao() {
+        return comissao;
+    }
+
+    public void setComissao(String comissao) {
+        this.comissao = comissao;
+    }
+    public String getAgendaPagamento() {
+        return agendaPagamento;
+    }
+
+    public void setAgendaPagamento(String agendaPagamento) {
+        this.agendaPagamento = agendaPagamento;
     }
 }

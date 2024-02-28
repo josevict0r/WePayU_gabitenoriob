@@ -108,7 +108,8 @@ public class PontoController {
 
         Ponto ponto = new Ponto(dataobj, horasNum, emp);
         pontos.add(ponto);
-        pontosDosEmpregados.put(emp, pontos);
-        pontosDosEmpregadosPersistencia.put(emp,pontos);
+        //pontosDosEmpregados.put(emp, pontos);
+        //pontosDosEmpregadosPersistencia.put(emp,pontos);
+        //JA QUE VAI SER TD DENTRO DE EMPREGADO  PQ O HASH Q VAI P XML USA SO EMP, EMPREGADO VOU POR UM SET PONTO E ETC
     }
 }

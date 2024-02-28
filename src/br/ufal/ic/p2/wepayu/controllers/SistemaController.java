@@ -1,30 +1,104 @@
 package br.ufal.ic.p2.wepayu.controllers;
 
-import br.ufal.ic.p2.wepayu.models.Ponto;
-import br.ufal.ic.p2.wepayu.models.Servico;
-import br.ufal.ic.p2.wepayu.models.Venda;
-import br.ufal.ic.p2.wepayu.models.empregados.Empregado;
-import java.io.FileNotFoundException;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 import java.util.*;
 
+import br.ufal.ic.p2.wepayu.models.Empregado;
+
 public class SistemaController {
     public static LinkedHashMap<String, Empregado> empregados = new LinkedHashMap<String, Empregado>();
     static ArrayList<Empregado> empregadosPersistencia = new ArrayList<Empregado>();
-    public static Map<String, List<Ponto>> pontosDosEmpregados = new HashMap<>();
-    static Map<String, List<Ponto>> pontosDosEmpregadosPersistencia = new HashMap<>();
+   
+    private static Stack<HashMap<String, Empregado>> undo;
+    private static Stack<HashMap<String, Empregado>> redo;
 
-    static Map<String, List<Venda>> vendasDosEmpregados = new HashMap<>();
-    static Map<String, List<Venda>> vendasDosEmpregadosPersistencia = new HashMap<>();
+    public static void pushUndo(EmpregadoController e) throws Exception {
 
-    static Map<String, List<Servico>> servicoDosEmpregados = new HashMap<>();
-    static Map<String, List<Servico>> servicoDosEmpregadosPersistencia = new HashMap<>();
+       /* if (!systemOn) {
+            ExceptionSystem exceptionSystem = new ExceptionSystem();
+            exceptionSystem.msgNaoPodeDarComandos();
+            return;
+        }*/
 
+        HashMap<String, Empregado> novaHash = new HashMap<>();
+
+        if (undo == null)
+            undo = new Stack<>();
+
+        undo.push(novaHash);
+    }
+
+    //apenas a lista!
+    public static void pushUndo(HashMap<String, Empregado> e) throws Exception {
+
+        /*if (!systemOn) {
+            ExceptionSystem exceptionSystem = new ExceptionSystem();
+            exceptionSystem.msgNaoPodeDarComandos();
+            return;
+        }*/
+
+        if (undo == null)
+            undo = new Stack<>();
+
+        undo.push(e);
+    }
+
+    public static HashMap<String, Empregado> popUndo() throws Exception {
+        /*if (!systemOn) {
+            ExceptionSystem exceptionSystem = new ExceptionSystem();
+            exceptionSystem.msgNaoPodeDarComandos();
+            return null;
+        }
+
+        if (undo.empty()) {
+            ExceptionSystem exceptionSystem = new ExceptionSystem();
+            exceptionSystem.msgNaoHaComandoDesfazer();
+            return  null;
+        }*/
+
+        HashMap<String, Empregado> e = undo.peek();
+
+        if (undo.size() > 1)  SistemaController.pushRedo(e);
+
+        undo.pop();
+
+        return e;
+    }
+
+    public static void pushRedo(HashMap<String, Empregado> e) throws Exception {
+        /*if (!systemOn) {
+            ExceptionSystem exceptionSystem = new ExceptionSystem();
+            exceptionSystem.msgNaoPodeDarComandos();
+            return;
+        }*/
+
+        if (redo == null) redo = new Stack<>();
+
+        redo.push(e);
+    }
+
+    public static HashMap<String, Empregado> popRedo() throws Exception {
+        /*if (!systemOn) {
+            ExceptionSystem exceptionSystem = new ExceptionSystem();
+            exceptionSystem.msgNaoPodeDarComandos();
+            return null;
+        }
+
+        if (redo.empty()) {
+            ExceptionSystem exceptionSystem = new ExceptionSystem();
+            exceptionSystem.msgNaoHaComandoFazer();
+            return  null;
+        }*/
+
+        HashMap<String, Empregado> e = redo.peek();
+
+        SistemaController.pushUndo(e);
+        redo.pop();
+
+        return e;
+    }
 
     public static void encerrarSistema() throws FileNotFoundException {
 
