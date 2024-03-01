@@ -3,6 +3,8 @@ package br.ufal.ic.p2.wepayu.controllers;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 
 import br.ufal.ic.p2.wepayu.models.Empregado;
@@ -11,6 +13,7 @@ public class SistemaController {
     public static LinkedHashMap<String, Empregado> empregados = new LinkedHashMap<String, Empregado>();
     static ArrayList<Empregado> empregadosPersistencia = new ArrayList<Empregado>();
    
+ 
     private static Stack<HashMap<String, Empregado>> undo;
     private static Stack<HashMap<String, Empregado>> redo;
 
@@ -102,37 +105,56 @@ public class SistemaController {
 
     public static void encerrarSistema() throws FileNotFoundException {
 
-        XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("empregado.xml")));
-        encoder.writeObject(empregadosPersistencia);
-        encoder.close();
+       try (BufferedOutputStream file = new BufferedOutputStream(
+                new FileOutputStream("dados.xml"))) {
+            XMLEncoder encoder = new XMLEncoder(file);
+            empregados.forEach((id, empregado) -> {
+                encoder.writeObject(empregado);
+            });
+            encoder.close();
+        } catch (IOException e) {
+            System.out.println("Arquivo nao encontrado");
+        }
 
     }
 
     public static void zerarSistema() throws FileNotFoundException {
         empregados.clear();
-        XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("empregado.xml")));
-        for(Empregado i : empregadosPersistencia) {
-            encoder.remove(i);
+        try {
+            Files.delete(Path.of("dados.xml"));
+        }catch (Exception e){
+            System.out.println("Arquivo nao existe");
         }
-        empregadosPersistencia.clear();
 
 
     }
 
     @SuppressWarnings("unchecked")
-    public static void iniciarSistema() throws FileNotFoundException {
+    public static LinkedHashMap<String, Empregado> iniciarSistema() throws FileNotFoundException {
 
-        XMLDecoder decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream("empregado.xml")));
-        empregadosPersistencia = (ArrayList<Empregado>) decoder.readObject();
-        for(Empregado i : empregadosPersistencia) {
-            empregados.put(i.getId(), i);
+        LinkedHashMap<String, Empregado> empregados = new LinkedHashMap<>();
 
+        try(BufferedInputStream file = new BufferedInputStream(
+                new FileInputStream("dados.xml"))){
+            XMLDecoder decoder = new XMLDecoder(file);
+            while(true){
+                try{
+                    Empregado aux = (Empregado) decoder.readObject();
+                    empregados.put(aux.getId(), aux);
+                }catch (Exception e) {
+                    break;
+                }
+            }
+            decoder.close();
+        }catch (IOException e) {
+            System.out.println("Arquivo nao encontrado");
         }
-
-        decoder.close();
-
+        return empregados;
 
 
+    }
 
+    public static LinkedHashMap<String, Empregado> getEmpregados() {
+        return empregados;
     }
 }

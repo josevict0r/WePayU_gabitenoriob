@@ -3,6 +3,7 @@ package br.ufal.ic.p2.wepayu.controllers;
 import br.ufal.ic.p2.wepayu.exceptions.*;
 
 import br.ufal.ic.p2.wepayu.models.Banco;
+import br.ufal.ic.p2.wepayu.models.Comissionado;
 import br.ufal.ic.p2.wepayu.models.Empregado;
 import br.ufal.ic.p2.wepayu.models.Sindicato;
 
@@ -56,7 +57,7 @@ public class EmpregadoController {
 
     public static String criarEmpregado(String nome, String endereco, String tipo, String salario) throws EmpregadoNaoExisteException, SalarioNumerico, SalarioPositivo, SalarioNulo, TipoInvalido, TipoNaoAplicavel, EnderecoNulo, NomeNulo {
 
-        Empregado novo = new Empregado(nome, endereco, tipo, salario,null);
+        Empregado novo = new Empregado(nome, endereco, tipo, salario);
         String id = UUID.randomUUID().toString();
 
         if (nome.isEmpty()) {
@@ -89,9 +90,9 @@ public class EmpregadoController {
     }
 
     
-    public static String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException, ComissaoPositiva, ComissaoNumerica, ComissaoNula, SalarioNumerico, SalarioPositivo, SalarioNulo, TipoInvalido, TipoNaoAplicavel, EnderecoNulo, NomeNulo {
+    public static String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws Exception {
 
-        Empregado novo = new Empregado(nome, endereco, tipo, salario, comissao);
+        Comissionado novo = new Comissionado(nome, endereco, tipo, salario, comissao);
         String id = UUID.randomUUID().toString();
         
 
@@ -168,7 +169,7 @@ public class EmpregadoController {
         else if (atributo.equals("comissao")) {
             if (buscado.getTipo() == "comissionado" ) {
                 
-                resultado = buscado.getComissao();
+                resultado = ((Comissionado) buscado).getComissao();
                     
                 }
          else {
@@ -215,7 +216,10 @@ public class EmpregadoController {
             } else {
                 throw new NaoBanco();
             }
-        } else {
+        } else if(atributo.equals("agendaPagamento")){
+            resultado = buscado.getAgendaPagamento();
+        }
+        else {
             throw new AtributoNaoExiste();
         }
         return resultado;
@@ -254,7 +258,7 @@ public class EmpregadoController {
     }
 
     //ALTERA GERAL - 3 variaveis
-    public static void alteraAtributoEmpregado(String emp, String atributo, String valor1) throws NaoComissionado, EmpregadoNaoExisteException, AtributoNaoExiste, NomeNulo, SalarioPositivo, SalarioNumerico, SalarioNulo, TipoInvalido, EnderecoNulo, ComissaoPositiva, ComissaoNumerica, ComissaoNula, MetodoInvalido, IdentificacaoNula, ValorTrueFalse {
+    public static void alteraAtributoEmpregado(String emp, String atributo, String valor1) throws NaoComissionado, EmpregadoNaoExisteException, AtributoNaoExiste, NomeNulo, SalarioPositivo, SalarioNumerico, SalarioNulo, TipoInvalido, EnderecoNulo, ComissaoPositiva, ComissaoNumerica, ComissaoNula, MetodoInvalido, IdentificacaoNula, ValorTrueFalse, AgendaNaoDisponivel {
          System.out.println("ENTRA NO ALTERA GERAL VALOR 1");
         Empregado atualizar = empregados.get(emp);
         if (emp.isEmpty()) {
@@ -310,7 +314,7 @@ public class EmpregadoController {
                 throw new ComissaoPositiva();
             } else {
 
-                atualizar.setComissao(valor1); 
+               ((Comissionado)atualizar).setComissao(valor1); 
                 
             }
 
@@ -331,6 +335,15 @@ public class EmpregadoController {
                     throw new ValorTrueFalse();
                 }
             }
+                else if(atributo.equals("agendaPagamento")){
+                    if(!valor1.equals("semanal 5") && !valor1.equals("mensal $") && !valor1.equals("semanal 2 5")){
+                        throw new AgendaNaoDisponivel();
+                    }
+                    else{
+                    atualizar.setAgendaPagamento(valor1);
+                    }
+                }
+
          else {
             throw new AtributoNaoExiste();
         }

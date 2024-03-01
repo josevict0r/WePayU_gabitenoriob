@@ -19,7 +19,7 @@ public class Facade {
         SistemaController.encerrarSistema();
     }
 
-    public  void alteraEmpregado(String emp,String atributo, String valor) throws NaoComissionado, SalarioNulo, AtributoNaoExiste, TipoInvalido, EnderecoNulo, MetodoInvalido, ComissaoNumerica, EmpregadoNaoExisteException, NomeNulo, SalarioNumerico, ComissaoPositiva, SalarioPositivo, ComissaoNula, IdentificacaoNula, ValorTrueFalse {
+    public  void alteraEmpregado(String emp,String atributo, String valor) throws NaoComissionado, SalarioNulo, AtributoNaoExiste, TipoInvalido, EnderecoNulo, MetodoInvalido, ComissaoNumerica, EmpregadoNaoExisteException, NomeNulo, SalarioNumerico, ComissaoPositiva, SalarioPositivo, ComissaoNula, IdentificacaoNula, ValorTrueFalse, AgendaNaoDisponivel {
         EmpregadoController.alteraAtributoEmpregado(emp, atributo, valor);
     }
     
@@ -92,6 +92,17 @@ public class Facade {
 
     public void redo() throws Exception {
         SistemaController.popRedo();
+    }
+
+    public void rodaFolha(String data, String saida){
+        FolhaController.rodaFolha(data,saida);
+    }
+    public String totalFolha(String data){
+       return FolhaController.totalFolha(data);
+    }
+
+    public void criarAgenda(String agenda){
+        FolhaController.criarAgenda(agenda);
     }
 
 

@@ -10,17 +10,12 @@ public class Empregado {
     private Sindicato sindicato;
     protected String metodoPagamento;
     protected String agendaPagamento;
-    
-
-    private String comissao;
-
-
     protected Banco banco;
 
     public Empregado() {
     }
 
-    public Empregado(String nome, String endereco, String tipo, String salario, String comissao) {
+    public Empregado(String nome, String endereco, String tipo, String salario) 
         {
             this.nome = nome;
             this.endereco = endereco;
@@ -31,25 +26,25 @@ public class Empregado {
             this.sindicato = null;
             this.metodoPagamento = "emMaos";
             this.banco = null;
-            if(this.tipo == "horista"){
-                this.agendaPagamento = "semanal 5";
-            }
-            else if(this.tipo == "assalariado"){
-                this.agendaPagamento = "mensal $";
-            }
-            else{
-                this.agendaPagamento = "semanal 2 5";
-            }
+            this.agendaPagamento = getDefaultAgendaPagamento(); 
 
-            if(this.tipo == "comissionado"){
-                this.comissao = comissao;
-            }
-            else{
-                this.comissao = null;
-            }
+        
+    
+        
+
+
+    }
+
+    private String getDefaultAgendaPagamento() {
+        
+        if ("horista".equals(tipo)) {
+            return "semanal 5";
+        } else if ("assalariado".equals(tipo)) {
+            return "mensal $";
+        } else {
+            return "semanal 2 5";
         }
-
-
+    
     }
 
     public String getNome() {
@@ -123,18 +118,15 @@ public class Empregado {
     public void setBanco(Banco banco) {
         this.banco = banco;
     }
-    public String getComissao() {
-        return comissao;
-    }
-
-    public void setComissao(String comissao) {
-        this.comissao = comissao;
-    }
+   
     public String getAgendaPagamento() {
+    
         return agendaPagamento;
     }
 
     public void setAgendaPagamento(String agendaPagamento) {
         this.agendaPagamento = agendaPagamento;
     }
+
+
 }
