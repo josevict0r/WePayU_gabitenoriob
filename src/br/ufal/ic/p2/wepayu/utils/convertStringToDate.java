@@ -5,8 +5,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.ResolverStyle;
 
 public class convertStringToDate {
-    private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d/M/uuuu").withResolverStyle(ResolverStyle.STRICT);
-    public LocalDate convertStringToDate(String dataString){
-     return LocalDate.parse(dataString, dateFormatter);
+    public static LocalDate convertStringToDate(String dataString, int metodo){
+     DateTimeFormatter dateFormatter0 = DateTimeFormatter.ofPattern("d/M/yyyy").withResolverStyle(ResolverStyle.STRICT);
+     DateTimeFormatter dateFormatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd").withResolverStyle(ResolverStyle.STRICT);
+        if(metodo == 0){
+
+     return LocalDate.parse(dataString, dateFormatter0);
+        }
+        else{
+            return LocalDate.parse(dataString,dateFormatter1);
+        }
     }
 }

@@ -18,4 +18,8 @@ public class Comissionado extends Empregado{
     public void setComissao(String comissao) {
         this.comissao = comissao;
     }
+    public Double getSalarioBruto(String dataInicial, String data) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSalarioBruto'");
+    }
 }

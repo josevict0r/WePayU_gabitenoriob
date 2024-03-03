@@ -8,4 +8,8 @@ public class Horista extends Empregado{
     public Horista(String nome, String endereco, String tipo, String salario) throws Exception {
         super(nome, endereco, tipo, salario);
     }
+    public Double getSalarioBruto(String dataInicial, String data) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getSalarioBruto'");
+    }
 }

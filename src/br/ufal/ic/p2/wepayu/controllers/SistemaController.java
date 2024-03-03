@@ -36,64 +36,43 @@ public class SistemaController {
     //apenas a lista!
     public static void pushUndo(HashMap<String, Empregado> e) throws Exception {
 
-        /*if (!systemOn) {
-            ExceptionSystem exceptionSystem = new ExceptionSystem();
-            exceptionSystem.msgNaoPodeDarComandos();
-            return;
-        }*/
+        if (undo == null) {
+        undo = new Stack<>();
+    }
 
-        if (undo == null)
-            undo = new Stack<>();
-
-        undo.push(e);
+    undo.push(e);
+    redo.clear();
     }
 
     public static HashMap<String, Empregado> popUndo() throws Exception {
-        /*if (!systemOn) {
-            ExceptionSystem exceptionSystem = new ExceptionSystem();
-            exceptionSystem.msgNaoPodeDarComandos();
-            return null;
-        }
+       if (undo == null || undo.empty()) {
+        return null;
+    }
 
-        if (undo.empty()) {
-            ExceptionSystem exceptionSystem = new ExceptionSystem();
-            exceptionSystem.msgNaoHaComandoDesfazer();
-            return  null;
-        }*/
+    HashMap<String, Empregado> e = undo.peek();
 
-        HashMap<String, Empregado> e = undo.peek();
+    if (undo.size() > 1) {
+        SistemaController.pushRedo(e);
+    }
 
-        if (undo.size() > 1)  SistemaController.pushRedo(e);
+    undo.pop();
 
-        undo.pop();
-
-        return e;
+    return e;
     }
 
     public static void pushRedo(HashMap<String, Empregado> e) throws Exception {
-        /*if (!systemOn) {
-            ExceptionSystem exceptionSystem = new ExceptionSystem();
-            exceptionSystem.msgNaoPodeDarComandos();
-            return;
-        }*/
+        if (redo == null) {
+        redo = new Stack<>();
+    }
 
-        if (redo == null) redo = new Stack<>();
+    redo.push(e);
 
-        redo.push(e);
+    
+    undo.clear();
     }
 
     public static HashMap<String, Empregado> popRedo() throws Exception {
-        /*if (!systemOn) {
-            ExceptionSystem exceptionSystem = new ExceptionSystem();
-            exceptionSystem.msgNaoPodeDarComandos();
-            return null;
-        }
-
-        if (redo.empty()) {
-            ExceptionSystem exceptionSystem = new ExceptionSystem();
-            exceptionSystem.msgNaoHaComandoFazer();
-            return  null;
-        }*/
+       
 
         HashMap<String, Empregado> e = redo.peek();
 
