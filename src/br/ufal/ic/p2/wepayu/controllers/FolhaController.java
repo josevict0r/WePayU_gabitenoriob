@@ -60,36 +60,31 @@ public class FolhaController {
         double totalSalarioBruto = 0;
         double totalDescontos = 0;
         double totalSalarioLiquido = 0;
+       Double total = 0.00;
          String date = convertStringToStringFolha.convertStringToStringFolha(data);
+try (BufferedReader br = new BufferedReader(new FileReader("folha-" + date + ".txt"))) {
+            String line;
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("folha-" + date + ".txt"))) {
-            String linha;
-            while ((linha = reader.readLine()) != null) {
-                String[] partes = linha.split("\\s+");
-
-                if (partes.length > 0 && partes[0].equalsIgnoreCase("TOTAL")) {
-                    break; 
+            while ((line = br.readLine()) != null) {
+                if (line.contains("TOTAL FOLHA")) {
+                    total = extractTotal(line);
+                    break;
                 }
-
-                if (partes.length >= 7) {
-                    double salarioBruto = Double.parseDouble(partes[3].replace(",", ""));
-                    double descontos = Double.parseDouble(partes[4].replace(",", ""));
-                    double salarioLiquido = Double.parseDouble(partes[5].replace(",", ""));
-
-                    totalSalarioBruto += salarioBruto;
-                    totalDescontos += descontos;
-                    totalSalarioLiquido += salarioLiquido;
-                }
+                
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        String totales = convertDoubleToString.convertDoubleToString(totalSalarioBruto,2);
 
-        return totales;
+        return convertDoubleToString.convertDoubleToString(total,2);
     }
 
+    private static double extractTotal(String line) {
+        // Extrai o valor total da linha, considerando o formato do exemplo
+        String[] parts = line.split("\\s+");
+        return Double.parseDouble(parts[parts.length - 1].replace(".", ","));
+    }
     public static void criarAgenda(String agenda) {
         
     }
