@@ -5,11 +5,10 @@ public class Comissionado extends Empregado{
     private String comissao;
 
     public Comissionado(){
-        super();
     }
     public Comissionado(String nome, String endereco, String tipo, String salario, String comissao) throws Exception {
         super(nome, endereco, tipo, salario);
-        setComissao(comissao);
+        this.comissao = comissao;
         
     }
 

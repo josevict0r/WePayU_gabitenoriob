@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 public class Facade {
 
     public Facade() throws FileNotFoundException {
-       // SistemaController.encerrarSistema();
+       //SistemaController.encerrarSistema();
         SistemaController.iniciarSistema();
 
     }
@@ -23,7 +23,7 @@ public class Facade {
         EmpregadoController.alteraAtributoEmpregado(emp, atributo, valor);
     }
     
-    public  void alteraEmpregado(String emp,String atributo, String valor1, String comissao) throws ValorTrueFalse, IdentificacaoNula, NaoComissionado, EmpregadoNaoExisteException { 
+    public  void alteraEmpregado(String emp,String atributo, String valor1, String comissao) throws Exception { 
      EmpregadoController.alteraEmpregado(emp,atributo,valor1, comissao);
    }
     
@@ -82,7 +82,7 @@ public class Facade {
         return EmpregadoController.criarEmpregado(nome,endereco,tipo,salario);
     }
 
-    public String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws EmpregadoNaoExisteException,  SalarioNulo, TipoInvalido, EnderecoNulo, ComissaoNumerica, SalarioNumerico, NomeNulo, ComissaoPositiva, ComissaoNula, SalarioPositivo, TipoNaoAplicavel {
+    public String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws Exception {
         return EmpregadoController.criarEmpregado(nome,endereco,tipo,salario,comissao);
     }
 
@@ -101,7 +101,7 @@ public class Facade {
        return FolhaController.totalFolha(data);
     }
 
-    public void criarAgenda(String agenda){
+    public void criarAgendaDePagamentos(String agenda){
         FolhaController.criarAgenda(agenda);
     }
 

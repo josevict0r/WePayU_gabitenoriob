@@ -1,6 +1,5 @@
 package br.ufal.ic.p2.wepayu.models;
 
-import java.util.ArrayList;
 
 public class Horista extends Empregado{
     public Horista(){

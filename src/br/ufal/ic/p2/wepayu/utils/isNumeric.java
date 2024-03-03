@@ -2,6 +2,7 @@ package br.ufal.ic.p2.wepayu.utils;
 
 public class isNumeric {
     public static boolean isNumeric(String str) {
+        //System.out.println(Double.parseDouble(str));
         try {
             Double.parseDouble(str);
             return true;

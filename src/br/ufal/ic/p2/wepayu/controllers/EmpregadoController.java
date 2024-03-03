@@ -92,33 +92,32 @@ public class EmpregadoController {
     
     public static String criarEmpregado(String nome, String endereco, String tipo, String salario, String comissao) throws Exception {
 
-        Comissionado novo = new Comissionado(nome, endereco, tipo, salario, comissao);
-        String id = UUID.randomUUID().toString();
+
         
 
         if (nome.isEmpty()) {
             throw new NomeNulo();
         }
-        if (novo.getEndereco().isBlank()) {
+        else if (endereco.isBlank()) {
             throw new EnderecoNulo();
         }
-        if (tipo.equals("horista") || tipo.equals("assalariado")) {
+        else if (tipo.equals("horista") || tipo.equals("assalariado")) {
             throw new TipoNaoAplicavel();
         }
-        if (!(novo.getTipo().equals("horista")) && !(novo.getTipo().equals("assalariado")) && !(novo.getTipo().equals("comissionado"))) {
+        else if (!(tipo.equals("horista")) && !(tipo.equals("assalariado")) && !(tipo.equals("comissionado"))) {
 
             throw new TipoInvalido();
         }
-        if (novo.getSalario().isBlank()) {
+        else if (salario.isBlank()) {
             throw new SalarioNulo();
         }
-        if (novo.getSalario().contains("-")) {
+        else if (salario.contains("-")) {
             throw new SalarioPositivo();
         }
-        if (!isNumeric(novo.getSalario().replace(",", "."))) {
+        else if (!isNumeric(salario.replace(",", "."))) {
             throw new SalarioNumerico();
         }
-        if (novo.getTipo().equals("comissionado")) {
+        else if (tipo.equals("comissionado")) {
             if (comissao.isBlank()) {
                 throw new ComissaoNula();
             }
@@ -129,7 +128,9 @@ public class EmpregadoController {
                 throw new ComissaoPositiva();
             }
         }
-
+        Empregado novo = new Comissionado(nome,endereco,tipo,salario,comissao);
+        // ta certo System.out.println(novo.getNome() + " " + novo.getTipo()) ;
+        String id = UUID.randomUUID().toString();
         empregados.put(id, novo);
         novo.setId(id);
         empregadosPersistencia.add(novo);
@@ -140,7 +141,7 @@ public class EmpregadoController {
     public static String getAtributoEmpregado(String emp, String atributo) throws EmpregadoNaoExisteException, IdentificacaoNula, AtributoNaoExiste, NaoBanco, NaoSindicalizado, NaoComissionado {
         String resultado = null;
         Empregado buscado = empregados.get(emp);
-        //System.out.println(buscado.getNome() + " " + buscado.getTipo());
+       //System.out.println(buscado.getNome() + " " + buscado.getTipo());
 
         if (emp.isEmpty()) {
             throw new IdentificacaoNula();
@@ -161,18 +162,25 @@ public class EmpregadoController {
         } else if (atributo.equals("sindicalizado")) {
             
             boolean cut = buscado.isSindicalizado();
+           // System.out.println(cut);
             resultado = Boolean.toString(cut);
             
         } 
         
         
         else if (atributo.equals("comissao")) {
-            if (buscado.getTipo() == "comissionado" ) {
+           // ok System.out.println("entra aq");
+            
+            if (buscado.getTipo().equals("comissionado")) {
+               //ok System.out.println("entra aq");
+               if(buscado instanceof Comissionado){
+
+                resultado =  ((Comissionado) buscado).getComissao();
+               }
                 
-                resultado = ((Comissionado) buscado).getComissao();
                     
                 }
-         else {
+         else {//TA VINDO P CA
                 throw new NaoComissionado();
             }
 
@@ -227,27 +235,28 @@ public class EmpregadoController {
 
     //altera empregados = faço um empregado a ser atualizado, atualizo ele e ponho ELE na lista de empregados empregados e empregadosPersistencia
     public static void alteraEmpregadoSindicalizado(String emp, String atributo, boolean valor, String idSindicato, String taxaSindical) throws IdentificacaoRepetida, IdSindicatoNula, TaxaNumerica, TaxaNegativa, TaxaNula, ValorTrueFalse {
-        System.out.println("ENTRA NO ALTERA SINDICALIZADO");
+        //System.out.println("ENTRA NO ALTERA SINDICALIZADO");
         Empregado atualizar = empregados.get(emp);
         atualizar.setSindicalizado(valor);
         if (idSindicato.isEmpty()) {
             throw new IdSindicatoNula();
         }
-        if (taxaSindical.isEmpty()) {
+       else if (taxaSindical.isEmpty()) {
             throw new TaxaNula();
         }
-        if (taxaSindical.contains("-")) {
+        else if (taxaSindical.contains("-")) {
             throw new TaxaNegativa();
         }
-        if (!isNumeric(taxaSindical)) {
+        else if (!isNumeric(taxaSindical.replace(",", "."))) {
             throw new TaxaNumerica();
         }
-        if (valor != true && valor != false) {
+        else if (valor != true && valor != false) {
             throw new ValorTrueFalse();
         }
-        if (sindicatos.containsKey(idSindicato)) throw new IdentificacaoRepetida();
+        else if (sindicatos.containsKey(idSindicato)) throw new IdentificacaoRepetida();
 
-        double taxaSindicalD = Double.parseDouble(taxaSindical);
+
+        double taxaSindicalD = Double.parseDouble(taxaSindical.replace(",", "."));
 
         Sindicato sindicato = new Sindicato(idSindicato, taxaSindicalD);
         sindicatos.put(sindicato.getIdSindicato(), sindicato);
@@ -259,7 +268,7 @@ public class EmpregadoController {
 
     //ALTERA GERAL - 3 variaveis
     public static void alteraAtributoEmpregado(String emp, String atributo, String valor1) throws NaoComissionado, EmpregadoNaoExisteException, AtributoNaoExiste, NomeNulo, SalarioPositivo, SalarioNumerico, SalarioNulo, TipoInvalido, EnderecoNulo, ComissaoPositiva, ComissaoNumerica, ComissaoNula, MetodoInvalido, IdentificacaoNula, ValorTrueFalse, AgendaNaoDisponivel {
-         System.out.println("ENTRA NO ALTERA GERAL VALOR 1");
+        // System.out.println("ENTRA NO ALTERA GERAL VALOR 1");
         Empregado atualizar = empregados.get(emp);
         if (emp.isEmpty()) {
             throw new IdentificacaoNula();
@@ -285,14 +294,15 @@ public class EmpregadoController {
             if (!valor1.contains("horista") && !valor1.contains("assalariado") && !valor1.contains("comissionado")) {
                 throw new TipoInvalido();
             }
-            //ver se tem q mudar algo em outro lugar, pq se mudou o tipo deve fazer o cast
             atualizar.setTipo(valor1);
+            //ver se tem q mudar algo em outro lugar, pq se mudou o tipo deve fazer o cast
+        
         } else if (atributo.equals("salario")) {
 
             if (valor1.isEmpty()) {
                 throw new SalarioNulo();
             }
-            if (!isNumeric(valor1)) {
+            if (!isNumeric(valor1.replace(",", "."))) {
                 throw new SalarioNumerico();
             }
             if (valor1.contains("-")) {
@@ -307,7 +317,7 @@ public class EmpregadoController {
             if (valor1.isEmpty()) {
                 throw new ComissaoNula();
             }
-            if (!isNumeric(valor1)) {
+            if (!isNumeric(valor1.replace(",","."))) {
                 throw new ComissaoNumerica();
             }
             if (valor1.contains("-")) {
@@ -353,8 +363,8 @@ public class EmpregadoController {
     }
 
     //4 variaveis, AQUI ELE MUDA O TIPO DE EMPREGADO E JA POE UM NOVO VALOR E SALARIO OU DE COMISSAO OU ALGO ASSIM
-    public static void alteraEmpregado (String emp, String atributo, String valor, String comissao) throws IdentificacaoNula, EmpregadoNaoExisteException {
-         System.out.println("ENTRA NO ALTERA QUE RECEBE A COMISSAO");
+    public static void alteraEmpregado (String emp, String atributo, String valor, String comissao) throws Exception {
+         //System.out.println("ENTRA NO ALTERA QUE RECEBE A COMISSAO");
         
         Empregado atualizar = empregados.get(emp);
         if (emp.isEmpty()) {
@@ -368,24 +378,30 @@ public class EmpregadoController {
 
         if (atributo.equals("tipo")) {
             if (valor.equals("comissionado")) {
-                atualizar.setTipo("comissionado");
-            }
+        Comissionado comissionado = new Comissionado(atualizar.getNome(), atualizar.getEndereco(), "comissionado", atualizar.getSalario(), "0.0");
+        comissionado.setTipo("comissionado");
+        comissionado.setId(atualizar.getId());
+        comissionado.setComissao(comissao);
+        empregados.put(emp, comissionado);
+        empregadosPersistencia.add(comissionado);
+    }
             else if(valor.equals("horista")){
                 atualizar.setTipo("horista");
                 atualizar.setSalario(comissao);
             }
         }
 
-        
+        if(!valor.equals("comissionado")){
         empregados.put(emp, atualizar);
         empregadosPersistencia.add(atualizar);
+        }
         
     }
 
 
     //6 variaveis
     public static void adicionaMetodoPagamento(String emp, String atributo, String valor1, String banco, String agencia, String contaCorrente) throws ContaNula, AgenciaNula, BancoNulo, EmpregadoNaoExisteException, IdentificacaoNula {
-         System.out.println("ENTRA NO ALTERA DE METODO DE PAGAMENTO");
+         //System.out.println("ENTRA NO ALTERA DE METODO DE PAGAMENTO");
         Banco bancoobj = new Banco(banco, agencia, contaCorrente);
         if (banco.isEmpty()) {
             throw new BancoNulo();
@@ -408,7 +424,7 @@ public class EmpregadoController {
 
         if (valor1.equals("banco")) {
             atualizar.setBanco(bancoobj);
-            System.out.println("Esse é o banco novo add:" + bancoobj.getAgencia() + bancoobj.getNome() + bancoobj.getContaCorrente());
+            
         }
 
         empregadosPersistencia.add(atualizar);

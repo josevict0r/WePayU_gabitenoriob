@@ -27,6 +27,7 @@ public class Folha {
     }
 
     
+   /* 
     public Double getTotalFolha(String data) throws Exception{
     Double total = 0d;
     LinkedHashMap<String, Empregado> empregados = SistemaController.getEmpregados();
@@ -261,7 +262,7 @@ public class Folha {
         geraDadosAssalariados(data);
         geraDadosComissionados(data);
 
-    }
+    }*/
 
 
 }
