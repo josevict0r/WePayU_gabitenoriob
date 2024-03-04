@@ -72,7 +72,17 @@ public class SistemaController {
     }
 
     public static HashMap<String, Empregado> popRedo() throws Exception {
-       
+        /*if (!systemOn) {
+            ExceptionSystem exceptionSystem = new ExceptionSystem();
+            exceptionSystem.msgNaoPodeDarComandos();
+            return null;
+        }
+
+        if (redo.empty()) {
+            ExceptionSystem exceptionSystem = new ExceptionSystem();
+            exceptionSystem.msgNaoHaComandoFazer();
+            return  null;
+        }*/
 
         HashMap<String, Empregado> e = redo.peek();
 

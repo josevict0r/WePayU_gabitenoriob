@@ -3,6 +3,7 @@ package br.ufal.ic.p2.wepayu.models;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Ponto implements Serializable {
@@ -11,7 +12,7 @@ public class Ponto implements Serializable {
     private String id;
     private LocalDate data;
     private Double horas;
-
+    
 
     public Ponto(){}
     public Ponto(LocalDate data, Double horas, String id) {
