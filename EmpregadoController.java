@@ -1,7 +1,7 @@
 package br.ufal.ic.p2.wepayu.controllers;
 
 import br.ufal.ic.p2.wepayu.exceptions.*;
-
+import br.ufal.ic.p2.wepayu.models.Agenda;
 import br.ufal.ic.p2.wepayu.models.Banco;
 import br.ufal.ic.p2.wepayu.models.Comissionado;
 import br.ufal.ic.p2.wepayu.models.Empregado;
@@ -223,7 +223,8 @@ public class EmpregadoController {
                 throw new NaoBanco();
             }
         } else if(atributo.equals("agendaPagamento")){
-            resultado = buscado.getAgendaPagamento();
+            resultado = buscado.getAgenda().getRegime() + " " + buscado.getAgenda().getSemanaDoMes() + " " + buscado.getAgenda().getDiaDaSemana();
+            
         }
         else {
             throw new AtributoNaoExiste();
@@ -348,7 +349,15 @@ public class EmpregadoController {
                         throw new AgendaNaoDisponivel();
                     }
                     else{
-                    atualizar.setAgendaPagamento(valor1);
+	                    String[] valor1split = valor1.split(" ");
+	                    if (valor1split.length == 2) {
+	                    	if (valor1split[0].equals("semanal")) {
+	                    		atualizar.setAgenda(new Agenda("semanal", Integer.parseInt(valor1split[1]), -1));	
+	                    	}
+	                    	else {
+	                    		atualizar.setAgenda(new Agenda("semanal", Integer.parseInt(valor1split[1]), Integer.parseInt(valor1split[2])));
+	                    	}
+	                    }
                     }
                 }
 

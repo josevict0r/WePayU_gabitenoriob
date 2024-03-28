@@ -9,7 +9,7 @@ public class Empregado {
     private String id;
     private Sindicato sindicato;
     protected String metodoPagamento;
-    protected String agendaPagamento;
+    protected Agenda agendaPagamento;
     protected Banco banco;
 
     public Empregado() {
@@ -26,7 +26,7 @@ public class Empregado {
             this.sindicato = null;
             this.metodoPagamento = "emMaos";
             this.banco = null;
-            this.agendaPagamento = getDefaultAgendaPagamento(); 
+            this.agendaPagamento = null; 
 
         
     
@@ -34,7 +34,7 @@ public class Empregado {
 
 
     }
-
+    /*
     private String getDefaultAgendaPagamento() {
         
         if ("horista".equals(tipo)) {
@@ -45,7 +45,7 @@ public class Empregado {
             return "semanal 2 5";
         }
     
-    }
+    }*/
 
     public String getNome() {
         return nome;
@@ -119,14 +119,13 @@ public class Empregado {
         this.banco = banco;
     }
    
-    public String getAgendaPagamento() {
-    
-        return agendaPagamento;
-    }
-
-    public void setAgendaPagamento(String agendaPagamento) {
-        this.agendaPagamento = agendaPagamento;
-    }
+    public Agenda getAgenda() {
+		return agendaPagamento;
+	}
+	
+	public void setAgenda(Agenda agenda) {
+		this.agendaPagamento = agenda; 
+	}
 
 
 }
